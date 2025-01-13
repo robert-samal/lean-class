@@ -30,12 +30,12 @@ For example, the term ``Subgroup.mul_mem`` is a proof of the theorem stating tha
 
 So ``subgroup.mul_mem`` takes as input the following rather long list of things. First it wants a type ``G`` (the `u` is a universe -- ignore it). Then it wants a group structure on ``G``. Next it wants a subgroup ``H`` of ``G``, then two elements ``x`` and ``y`` of ``G``, and finally two proofs; first a proof that ``x ∈ H`` and second a proof that ``y ∈ H``. Given all of these inputs, it then outputs a proof that ``x * y ∈ H``.
 
-Now let's imagine we're actually going to use this proof-emitting function to prove some explicit statement. We have some explicit group, for example the symmetric group :math:`S_5`, and some explicit subgroup `H` and some explicit permutations ``x`` and ``y`` in :math:`S_5`, and proofs ``hx`` and ``hy`` that ``x ∈ H`` and ``y ∈ H``. At the point where we feed in the input ``hx`` into ``subgroup.mul_mem``, Lean can look at ``hx`` and see immediately what ``x`` is (by looking at the type of ``hx``) and what ``G`` is (by looking at the type of ``x``). So, when you think about it, it's a bit pointless asking the *user* to explicitly supply 
+Now let's imagine we're actually going to use this proof-emitting function to prove some explicit statement. We have some explicit group, for example the symmetric group :math:`S_5`, and some explicit subgroup `H` and some explicit permutations ``x`` and ``y`` in :math:`S_5`, and proofs ``hx`` and ``hy`` that ``x ∈ H`` and ``y ∈ H``. At the point where we feed in the input ``hx`` into ``subgroup.mul_mem``, Lean can look at ``hx`` and see immediately what ``x`` is (by looking at the type of ``hx``) and what ``G`` is (by looking at the type of ``x``). So, when you think about it, it's a bit pointless asking the *user* to explicitly supply
 ``G`` and ``x`` as inputs, even though the function needs them as inputs, because actually the type of the input ``hx`` (namely ``x ∈ H``) contains enough information to uniquely determine them.
 
 Calculations like are what Lean's *unifier* does, and the ``{}`` and ``⦃⦄`` brackets are for this purpose; they mean that they are inputs to the function which the user need not actually supply at all; Lean will figure them out.
 
-Technical note: The difference between ``{}`` and ``⦃⦄`` is that one is more *eager* than the other; this is all about the exact timing of the unifier. Basically if you have ``f (a : X) {b : Y} (c : Z)`` and ``g (a : X) ⦃b : Y⦄ (c : Z)`` then the unifier will attempt to figure out ``b`` in ``f`` the moment you have given it ``f a``, but it will only start worrying about ``b`` in ``g`` when you have given it ``g a c``. For an example where this matters, see `section 6.5 of Theorem Proving In Lean <https://lean-lang.org/theorem_proving_in_lean4/interacting_with_lean.html#more-on-implicit-arguments>`_ . If you want a rule of thumb: use ``{}``. 
+Technical note: The difference between ``{}`` and ``⦃⦄`` is that one is more *eager* than the other; this is all about the exact timing of the unifier. Basically if you have ``f (a : X) {b : Y} (c : Z)`` and ``g (a : X) ⦃b : Y⦄ (c : Z)`` then the unifier will attempt to figure out ``b`` in ``f`` the moment you have given it ``f a``, but it will only start worrying about ``b`` in ``g`` when you have given it ``g a c``. For an example where this matters, see `section 6.5 of Theorem Proving In Lean <https://lean-lang.org/theorem_proving_in_lean4/interacting_with_lean.html#more-on-implicit-arguments>`_ . If you want a rule of thumb: use ``{}``.
 
 ``[]`` brackets
 ---------------
@@ -96,3 +96,5 @@ Sometimes the system goes wrong, and Lean cannot figure out the inputs it was su
 
    -- override `{}` input
    #check add_comm (G := ℝ) -- add_comm : ∀ (a b : ℝ), a + b = b + a
+
+Alternatively, you can write `@add_comm`, and then every bracket will be treated as if it's `()`.

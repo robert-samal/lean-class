@@ -19,12 +19,12 @@ If your goal is
 
    ⊢ True
 
-then it's pretty triv, so try ``triv``.
+then it's pretty triv, so try ``trivial``.
 
 Details
 -------
 
-Note that ``True`` here is the true proposition. If you know a proof in your head that the goal is true, that's not good enough. If your goal is ``⊢ P`` and you can tell that ``P`` is true (e.g. because you can deduce it from the hypotheses), ``triv`` won't work; ``triv`` only works when the goal is actually definitionally equal to ``True``. 
+Note that ``True`` here is the true proposition. If you know a proof in your head that the goal is true, that's not necessarily good enough.
 
 Further notes
 -------------
