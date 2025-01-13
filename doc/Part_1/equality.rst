@@ -3,14 +3,14 @@ Equality
 
 .. tip::
 
-   "Syntactic equality is they look identical, definitional equality is they are the same, propositional equality is they turn out to be the same." -- Bhavik Mehta
-   
+   "Syntactic equality is they look identical, definitional equality is they are the same, propositional equality is they turn out to be the same."
+
 As mathematicians we tend not to fuss too much about equality, at least at undergraduate level. When formalising mathematics in Lean's type theory, it turns out that one has to think a bit more carefully about what is going on. In Lean there are three different kinds of equality which one has to be aware of, and the differences between them are "non-mathematical". The strongest kind of equality is syntactic equality; this is the kind of equality that tactics like ``rw`` and ``simp`` care about. Then there is definitional equality; this is he kind of equality that tactics like ``exact`` and ``intro`` and ``rfl`` care about. Finally, there is propositional equality; this is the "usual" kind of equality as understood by mathematicians.
 
 Overview
 --------
 
-To give you a flavour of what this document is about, and in particular to indicate that these refined notions of equality are in some sense not "mathematical", here is an example. Let ``x`` be a natural number. As mathematicians we would all agree that ``0 + x = x`` and ``x + 0 = x``. Both of these are propositional equalities. However only one is a definitional equality, and neither of them are syntactic equalities. 
+To give you a flavour of what this document is about, and in particular to indicate that these refined notions of equality are in some sense not "mathematical", here is an example. Let ``x`` be a natural number. As mathematicians we would all agree that ``0 + x = x`` and ``x + 0 = x``. Both of these are propositional equalities. However only one is a definitional equality, and neither of them are syntactic equalities.
 
 .. _syneq:
 
@@ -86,7 +86,7 @@ works here:
      intro h
      /-
      tactic state now
-     
+
      P : Prop
      h : P
      ⊢ False
