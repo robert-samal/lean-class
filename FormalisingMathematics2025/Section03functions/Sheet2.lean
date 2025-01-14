@@ -88,7 +88,7 @@ example (f : X → Y) (g : Y → Z) (hf : Injective f) (hg : Injective g) : Inje
   -- (g∘f)(a)=(g∘f)(b), then a=b.
   rw [injective_def] at *
   -- so assume a and b are arbitrary elements of X, and let `h` be the
-  -- hypothesis thst `g(f(a))=g(f(b))`
+  -- hypothesis that `g(f(a))=g(f(b))`
   intro a b h
   -- our goal is to prove a=b.
   -- By injectivity of `g`, we deduce from `h` that `f(a)=f(b)`
