@@ -19,7 +19,7 @@ Some of you might know that whilst it's unproblematic to talk about the set of r
 
 Here is another example. If ``G`` is a group, and ``g`` is an element of this group, then in set theory one might say that ``G`` is a set and ``g ∈ G`` is an element of the set. In type theory one says instead that ``G : Type`` and that ``g : G``.
 
-The mental model which you should have in your mind is that in Lean, every object exists at one of three "levels". There are universes, such as ``Type``, there are types such as ``ℝ`` or ``G`` and there are terms such as ``37`` and ``g``. Every mathematical object you know fits neatly into this heirarchy. For example rings, fields and topological spaces are all types in Lean, and their elements are terms.
+The mental model which you should have in your mind is that in Lean, every object exists at one of three "levels". There are universes, such as ``Type``, there are types such as ``ℝ`` or ``G`` and there are terms such as ``37`` and ``g``. Every mathematical object you know fits neatly into this hierarchy. For example rings, fields and topological spaces are all types in Lean, and their elements are terms.
 
 Function types
 --------------
@@ -52,7 +52,7 @@ In usual mathematical logic, we might say the following: If ``P`` and ``Q`` are 
 
 In Lean's type theory we say it like this. If ``P`` and ``Q`` are types in the ``Prop`` universe, i.e., propositions, then we can consider the type ``P → Q`` of functions from proofs of ``P`` to proofs of ``Q``. If we have such a function ``h``, which takes as input a proof of ``P`` and spits out a proof of ``Q``, then ``h`` can be thought of as a proof that ``P ⇒ Q``. In Lean the function type ``P → Q`` lives in the ``Prop`` universe -- it's also a true-false statement.
 
-What Lean's type theory is suggesting here is that an interesting model for a true/false statement is a set with at most one element. If the set has an element, it correponds to a true statement, and if it has no elements then it corresponds to a false statement.
+What Lean's type theory is suggesting here is that an interesting model for a true/false statement is a set with at most one element. If the set has an element, it corresponds to a true statement, and if it has no elements then it corresponds to a false statement.
 
 As an exercise, imagine that ``P`` and ``Q`` are sets with either 0 or 1 element, and try and work out in each of the four cases the size of the set ``Hom(P,Q)``, which in Lean we would write as ``P → Q``. The answer you should get is that the size of ``Hom(P,Q)`` should be either 0 or 1, and it is 0 if ``P ⇒ Q`` is false, and 1 if ``P ⇒ Q`` is true.
 
