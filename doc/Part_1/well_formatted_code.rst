@@ -53,15 +53,15 @@ Sometimes you can end up with more than one goal. This can happen for two reason
    import Mathlib.Tactic
 
    example (a b c : ℕ) (h : a = b) : a ^ 2 + c = b ^ 2 + c := by
-     have h2 : a ^ 2 = b ^ 2 := by -- you made a second goal 
+     have h2 : a ^ 2 = b ^ 2 := by -- you made a second goal
        rw [h]
        -- other lines of code would go here, also indented
      rw [h2] -- back to only two space indentation
 
-The other way it can happen is if you use a tactic or apply a function which changes your old goal into more than one goal. 
+The other way it can happen is if you use a tactic or apply a function which changes your old goal into more than one goal.
 
 .. code-block::
-   
+
    import Mathlib.Tactic
 
    example (P Q : Prop) (hP : P) (hQ : Q) : P ∧ Q := by

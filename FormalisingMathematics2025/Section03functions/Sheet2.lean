@@ -27,7 +27,7 @@ evaluation, where you have `x : X` and `f : X → Y`, doesn't need
 brackets: you can just write `f x` instead of `f(x)`. You only
 need it when evaluating a function at a more complex object;
 for example if we also had `g : Y → Z` then we can't write
-`g f x` for `g(f(x))`, we have to write `g(f x)` otherwise
+`g f x` for `g(f(x))`, we have to write `g (f x)` otherwise
 `g` would eat `f` and get confused. Without brackets,
 a function just eats the next term greedily.
 

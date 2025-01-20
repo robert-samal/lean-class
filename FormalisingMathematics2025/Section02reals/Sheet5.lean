@@ -26,10 +26,6 @@ theorem tendsTo_neg {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fu
   intro ε hε
   specialize ha ε hε
   rcases ha with ⟨B, hB⟩
-
-  have h1 : 0 < ε / c := by
-    sorry
-
   use B
   intro n hn
   rw [← abs_neg]
