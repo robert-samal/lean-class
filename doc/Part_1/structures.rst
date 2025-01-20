@@ -102,5 +102,5 @@ do this by talking about ``e.toFun`` all the time, but Lean will just let you us
      norm_num
 
 Lean has things called :ref:`coercions <coercions>`. This is a way that given a term ``x`` of one type, you can "pretend" that it has a different type. What is actually happening is that a function which is essentially invisible to mathematicians is being called; it sends a bijection to the associated function! There's a coercion defined from ``Equiv X Y``
-to ``X → Y`` and this coercion is applied automatically when ``e`` recieves the "input" ``1``.
+to ``X → Y`` and this coercion is applied automatically when ``e`` receives the "input" ``1``.
 

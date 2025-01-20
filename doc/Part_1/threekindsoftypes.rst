@@ -73,7 +73,7 @@ You might think that this kind of construction can only make finite types, but i
      | zero : Nat
      | succ (n : Nat) : Nat
 
-(Peano observed that these two construtions were enough to define all natural numbers) and then mathlib sets up the notation ``ℕ`` for ``Nat`` later. If you've played the natural number game you'll know that we can define addition and multiplication on the natural numbers, and once one has these set up one can define functions from the naturals to the naturals or other types using ``fun``, for example ``fun (n : ℕ) ↦ 2*n+3`` defines a function from ``ℕ`` to ``ℕ``. However we can also use the equation compiler to inductively define (or more precisely, recursively define) functions from the naturals. For example the sequence defined by ``a(0)=3`` and ``a(n+1)=a(n)^2+37`` could be defined like this:
+(Peano observed that these two constructions were enough to define all natural numbers) and then mathlib sets up the notation ``ℕ`` for ``Nat`` later. If you've played the natural number game you'll know that we can define addition and multiplication on the natural numbers, and once one has these set up one can define functions from the naturals to the naturals or other types using ``fun``, for example ``fun (n : ℕ) ↦ 2*n+3`` defines a function from ``ℕ`` to ``ℕ``. However we can also use the equation compiler to inductively define (or more precisely, recursively define) functions from the naturals. For example the sequence defined by ``a(0)=3`` and ``a(n+1)=a(n)^2+37`` could be defined like this:
 
 .. code-block::
 
