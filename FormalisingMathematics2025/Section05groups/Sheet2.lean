@@ -37,7 +37,7 @@ variable {G : Type} [WeakGroup G] (a b c : G)
 /-
 
 The (tricky) challenge is to prove that G is a group, which we can interpret as
-proving the missing axioms `mul_one` and `mul_inv_self`. Note that you
+proving the missing axioms `mul_one` and `mul_inv_cancel`. Note that you
 can't use the `group` tactic any more because `G` isn't a group yet:
 this is what you're trying to prove!
 
@@ -59,7 +59,16 @@ theorem mul_eq_of_eq_inv_mul (h : b = a⁻¹ * c) : a * b = c := by sorry
 
 theorem mul_one (a : G) : a * 1 = a := by sorry
 
-theorem mul_inv_self (a : G) : a * a⁻¹ = 1 := by sorry
+theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 := by sorry
+
+/-
+And now we have all the pieces of information, we can put them together in this lemma.
+-/
+instance : Group G where
+  mul_assoc := mul_assoc
+  one_mul := one_mul
+  mul_one := mul_one
+  inv_mul_cancel := inv_mul_cancel
 
 end WeakGroup
 
@@ -68,7 +77,7 @@ end WeakGroup
 If you want to take this further: prove that if we make
 a new class `BadGroup` by replacing
 `one_mul` by `mul_one` in the definition of `weak_group`
-then it is no longer true that you can prove `mul_inv_self`;
+then it is no longer true that you can prove `mul_inv_cancel`;
 there are structures which satisfy `mul_assoc`, `mul_one`
 and `inv_mul_cancel` but which really are not groups.
 Can you find an example? Try it on paper first.

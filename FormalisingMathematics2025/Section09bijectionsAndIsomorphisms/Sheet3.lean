@@ -21,49 +21,45 @@ called `Equiv.refl`, `Equiv.symm` and `Equiv.trans`.
 
 -/
 -- this is called `Equiv.refl` in `mathlib`
-example (X : Type) : X ≃ X :=
-  { toFun := fun x ↦ x
-    invFun := fun y ↦ y
-    left_inv := by
-      sorry
-    right_inv := by
-      sorry }
+example (X : Type) : X ≃ X where
+  toFun := fun x ↦ x
+  invFun := fun y ↦ y
+  left_inv q := by simp
+  right_inv q := by simp
 
 -- now let's see you define `Equiv.symm` and `Equiv.trans`.
 -- Let's start with `Equiv.symm`.
 -- Note that if `e : X ≃ Y` then `e.toFun : X → Y`
 -- and `e.left_inv` is a proof of `∀ x : X, e.invFun (e.toFun x) = x` etc
 -- This is `Equiv.symm`. Can you fill in the proofs?
-example (X Y : Type) (e : X ≃ Y) : Y ≃ X :=
-  { toFun := e.invFun
+example (X Y : Type) (e : X ≃ Y) : Y ≃ X where
+  toFun := e.invFun
     -- you could write `λ x, e.inv_fun x` instead
-    invFun := e.toFun
-    left_inv := by
-      sorry
-    right_inv := by
-      sorry }
+  invFun := e.toFun
+  left_inv := e.right_inv
+  right_inv := e.left_inv
 
 -- Actually, you're not supposed to write `e.toFun` and `e.invFun`
 -- directly, because `X ≃ Y` has got a coercion to `X → Y`,
 -- so you can (and should) do it like this:
 -- `Equiv.symm` again
-example (X Y : Type) (e : X ≃ Y) : Y ≃ X :=
-  { toFun := e.symm
-    -- that was using `equiv.symm` and dot notation
-    invFun := e
-    -- that was using the coercion to function
-    left_inv := e.right_inv
-    right_inv := e.left_inv }
+example (X Y : Type) (e : X ≃ Y) : Y ≃ X where
+  toFun := e.symm
+  -- that was using `Equiv.symm` and dot notation
+  invFun := e
+  -- that was using the coercion to function
+  left_inv := e.right_inv
+  right_inv := e.left_inv
 
 -- `Equiv.trans`
-example (X Y Z : Type) (eXY : X ≃ Y) (eYZ : Y ≃ Z) : X ≃ Z :=
-  { toFun := fun x => eYZ (eXY x)
-    invFun := fun z => eXY.symm (eYZ.symm z)
-    left_inv := by
-      sorry
-    right_inv := by
-      sorry
-  }
+example (X Y Z : Type) (eXY : X ≃ Y) (eYZ : Y ≃ Z) : X ≃ Z where
+  toFun := fun x ↦ eYZ (eXY x)
+  invFun := fun z => eXY.symm (eYZ.symm z)
+  left_inv := by
+    sorry
+  right_inv := by
+    sorry
+
 
 -- Because `Equiv.trans` is already there, we can instead just use it
 -- directly:
@@ -77,7 +73,7 @@ example (X Y Z : Type) (eXY : X ≃ Y) (eYZ : Y ≃ Z) : X ≃ Z :=
 -- See if you can make the following bijection using dot notation
 -- (note: I didn't write `by` so Lean is just expecting the term)
 example (A B X : Type) (eAX : A ≃ X) (eBX : B ≃ X) : A ≃ B :=
-  sorry
+  eAX.trans eBX.symm
 
 /-
 

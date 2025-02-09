@@ -35,8 +35,7 @@ def bijection1 : ℚ ≃ ℚ where
   -- use the identity function from ℚ to ℚ
   invFun := id
   -- its inverse is also the identity function
-  left_inv :=
-    by
+  left_inv := by
     -- we have to prove ∀ q, id (id q) = q
     intro q
     rfl --- works because `id q` is definitionally equal to `q`.
@@ -60,10 +59,10 @@ example : bijection1 ≠ bijection2 := by
   -- assume for a contradiction that they're equal
   intro h
   -- simplify this mess
-  simp at h
+  simp only [Equiv.mk.injEq] at h
   -- `h` is now two false statements, let's just choose one
   cases' h with h1 _
-  rw [Function.funext_iff] at h1
+  rw [funext_iff] at h1
   -- now choose any number a such that a ≠ 3a+4
   specialize h1 37
   -- and now h1 is all about numbers so use the number tactic

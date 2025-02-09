@@ -90,8 +90,8 @@ variable (φ : G →* H)
 
 -- `φ` preserves multiplication
 
-example (a b : G) : φ (a * b) = φ a * φ b :=
-  φ.map_mul a b -- this is the term: no `by`
+example (a b : G) : φ (a * b) = φ a * φ b := by
+  exact φ.map_mul a b -- see what happens if you remove both `by / exact` from this
 
 example (a b : G) : φ (a * b⁻¹ * 1) = φ a * (φ b)⁻¹ * 1 := by
   -- if `φ.map_mul` means that `φ` preserves multiplication
@@ -100,7 +100,7 @@ example (a b : G) : φ (a * b⁻¹ * 1) = φ a * (φ b)⁻¹ * 1 := by
   sorry
 
 -- Group homomorphisms are extensional: if two group homomorphisms
--- are equal on all inputs the they're the same.
+-- are equal on all inputs then they're the same.
 
 example (φ ψ : G →* H) (h : ∀ g : G, φ g = ψ g) : φ = ψ := by
   -- Use the `ext` tactic.

@@ -48,8 +48,8 @@ example (X : Type) (S : Set X) (hS : S.Finite) : S = S := by
 -- Lots of proofs about finite sets in this sense live in the `Set.Finite` namespace.
 -- How would you find out the name of the lemma saying that the union of two finite
 -- sets is finite?
-example (X : Type) (S : Set X) (T : Set X) (hs : Set.Finite S) (ht : T.Finite) : (S ∪ T).Finite :=
-  by
+example (X : Type) (S : Set X) (T : Set X) (hs : Set.Finite S) (ht : T.Finite) :
+    (S ∪ T).Finite := by
   sorry
 
 /-
@@ -109,7 +109,7 @@ naturals (e.g. 2-3=0 and 5/2=2 in the naturals, as they are forced to return a n
 
 open BigOperators -- enable ∑ notation
 
-example (n : ℕ) : ∑ i in Finset.range n, (i : ℚ) ^ 2 = (n : ℚ) * (n - 1) * (2 * n - 1) / 6 := by
+example (n : ℕ) : ∑ i ∈ Finset.range n, (i : ℚ) ^ 2 = (n : ℚ) * (n - 1) * (2 * n - 1) / 6 := by
   -- induction on `n`.
   induction' n with d hd
   · -- base case `n = 0` will follow by rewriting lemmas such as `∑ i in finset.range 0 f(i) = 0`
@@ -122,7 +122,7 @@ example (n : ℕ) : ∑ i in Finset.range n, (i : ℚ) ^ 2 = (n : ℚ) * (n - 1)
     -- Now we have a sum over finset.range d, which we know the answer to by induction
     rw [hd]
     -- Now tidy up (e.g. replace all the `succ d` with `d + 1`)
-    simp
+    simp only [Nat.cast_add, Nat.cast_one]
     -- and now it must be an identity in algebra.
     ring
 

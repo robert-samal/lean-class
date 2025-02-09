@@ -119,8 +119,7 @@ theorem conjugate.mul_mem (hy : y ∈ {a : G | ∃ h, h ∈ H ∧ a = x * h * x�
   sorry
 
 -- Now here's the way to put everything together:
-def conjugate (H : Subgroup G) (x : G) : Subgroup G
-    where
+def conjugate (H : Subgroup G) (x : G) : Subgroup G where
   carrier := {a : G | ∃ h, h ∈ H ∧ a = x * h * x⁻¹}
   one_mem' := conjugate.one_mem
   inv_mem' := conjugate.inv_mem
