@@ -12,17 +12,14 @@ import Mathlib.Order.Filter.Basic
 # The order (≤) on filters
 
 We think of filters as generalised subsets, and just as subsets are partially ordered
-by `⊆`, filters are partially ordered too, by `≤`. Recall that a subset `X : set α`
-of `α` gives rise to a principal filter `𝓟 X : filter α`, and we definitely
+by `⊆`, filters are partially ordered too, by `≤`. Recall that a subset `X : Set α`
+of `α` gives rise to a principal filter `𝓟 X : Filter α`, and we definitely
 want `X ⊆ Y ↔ 𝓟 X ≤ 𝓟 Y` so let's think about how this should work. If `F` and `G`
 are filters, then `F ≤ G` should mean "the generalised subset `F` is contained
 in the generalised subset `G`", so it should mean "if a normal subset of α contains
 `G` then it contains `F`", so it should mean `G.sets ⊆ F.sets`, which is in fact
 the definition. Note that the smaller the filter `F`, the bigger the collection
 `F.sets`, because `F` is contained in more sets!
-
-In the `Filter` namespace there's a lemma
-
 
 Let's formalise this. Show that 𝓟 S ≤ 𝓟 T ↔ S ⊆ T.
 Note that this is called `principal_mono` in mathlib but
@@ -36,17 +33,18 @@ Some helpful lemmas (all in the `Filter` namespace):
 
 -/
 
-namespace Section12sheet2
+namespace Filter
 
 variable {α : Type}
 
-open Filter Set
+open Set
 -- so we don't keep having to type `Filter.le_def` and `Set.Subset.trans` etc
 
 open scoped Filter
 -- for 𝓟 notation
 
-example (S T : Set α) : 𝓟 S ≤ 𝓟 T ↔ S ⊆ T := sorry
+example (S T : Set α) : 𝓟 S ≤ 𝓟 T ↔ S ⊆ T := by
+  sorry
 
 -- Here's another useful lemma about principal filters.
 -- It's called `le_principal_iff` in mathlib but why
@@ -63,7 +61,7 @@ the intersection of `Fᵢ.sets` is also a filter. Let's check this.
 -/
 def lub {I : Type} (F : I → Filter α) : Filter α where
   sets := {X | ∀ i, X ∈ F i}
-  univ_sets := sorry
+  univ_sets := by simp
   sets_of_superset := sorry
   inter_sets := sorry
 
@@ -74,7 +72,12 @@ two axioms.
 
 -/
 -- it's an upper bound
-example (I : Type) (F : I → Filter α) (i : I) : F i ≤ lub F := sorry
+example (I : Type) (F : I → Filter α) (i : I) : F i ≤ lub F := by
+  rw [Filter.le_def]
+  intro x hx
+  rw [lub] at hx
+  simp only [Filter.mem_mk, mem_setOf_eq] at hx
+  apply hx
 
 -- it's ≤ all other upper bounds
 example (I : Type) (F : I → Filter α) (G : Filter α) (hG : ∀ i, F i ≤ G) :
@@ -103,4 +106,4 @@ example (I : Type) (F : I → Filter α) (i : I) : glb F ≤ F i := sorry
 example (I : Type) (F : I → Filter α) (G : Filter α) (hG : ∀ i, G ≤ F i) :
     G ≤ glb F := sorry
 
-end Section12sheet2
+end Filter

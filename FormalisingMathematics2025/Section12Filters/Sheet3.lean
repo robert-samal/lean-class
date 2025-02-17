@@ -27,11 +27,16 @@ Recall that `max x y` is the max of x and y in a `LinearOrder`, and
 `le_max_left a b : a ≤ max a b` and similarly `le_max_right`.
 -/
 
-namespace Section12sheet3
+namespace Filter
 
 open Set
 
-def atTop (L : Type) [LinearOrder L] (e : L) : Filter L where
+-- (The real definition of the atTop filter is more general than this: it only assumes that we have
+-- a preorder. But for now, where we're just thinking about going to infinity in ℕ or ℝ, a nonempty
+-- linear order is plenty general enough.)
+
+/-- A simplified version of the `atTop'` filter for nonempty linear orders. -/
+def atTop' (L : Type) [LinearOrder L] (e : L) : Filter L where
   sets := {X : Set L | ∃ x : L, ∀ y, x ≤ y → y ∈ X}
   univ_sets := sorry
   sets_of_superset := sorry
@@ -54,17 +59,23 @@ Things you might find helpful:
 `Finite.union : S.finite → T.finite → (S ∪ T).Finite`
 
 NB if you are thinking "I could never use Lean by myself, I don't know
-the names of all the lemmas so I have to rely on Kevin telling them all to
+the names of all the lemmas so I have to rely on someone telling them all to
 me" then what you don't realise is that I myself don't know the names
 of all the lemmas either -- I am literally just guessing them and pressing
 ctrl-space to check. Look at the names of the lemmas and begin to understand
 that you can probably guess them yourself.
 -/
-def cofinite (α : Type) : Filter α where
+def cofinite' (α : Type) : Filter α where
   sets := {S : Set α | Sᶜ.Finite}
   univ_sets := sorry
   sets_of_superset := sorry
   inter_sets := sorry
+
+def nhds' {X : Type} [TopologicalSpace X] (x : X) : Filter X where
+  sets := {s : Set X | ∃ U : Set X, x ∈ U ∧ IsOpen U ∧ U ⊆ s}
+  univ_sets := sorry
+  sets_of_superset := sorry
+  inter_sets := by sorry
 
 /-
 
@@ -79,4 +90,4 @@ If you like this filter stuff, then formalise in Lean and prove the following:
 
 -/
 
-end Section12sheet3
+end Filter
