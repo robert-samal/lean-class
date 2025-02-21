@@ -54,8 +54,69 @@ def Tendsto' (f : α → β) (l₁ : Filter α) (l₂ : Filter β) : Prop :=
 #check Metric.tendsto_nhds_nhds
 #check Metric.tendsto_atTop
 
-lemma tendsto_atTop_atTop_iff {α β : Type*} [LinearOrder α] [LinearOrder β] (f : α → β) :
+lemma tendsto_atTop_atTop_iff {α β : Type*} [Nonempty α] [LinearOrder α] [LinearOrder β]
+    (f : α → β) :
     Tendsto f atTop atTop ↔ ∀ b : β, ∃ i : α, ∀ a : α, i ≤ a → b ≤ f a := by
+  rw [tendsto_atTop_atTop]
+
+/-
+With filters at hand, it's now really easy to talk about something being true "sufficiently close"
+to a point, or for all "sufficiently large" numbers. Specifically, I can say that `p : ℕ → Prop`
+is true for all sufficiently large `n` if the set of places where it's true `{n | p n}` is in the
+`atTop` filter.
+This has notation: ∀ᶠ n in atTop, p n, and it's called "eventually" or "eventually forall".
+-/
+
+example {p : ℕ → Prop} : (∀ᶠ n in atTop, p n) ↔ ∃ N, ∀ n ≥ N, p n := by
+  rw [eventually_atTop]
+
+/-
+Now's a good time to mention that Lean usually doesn't like the `≥` symbol: most lemmas will be
+stated in terms of `≤`, and some automation will work best with `≤`. So mathlib has a style
+convention to use `≤` everywhere: it's a bit weird, I know! That means saying that `n > 1` would
+usually be written as `1 < n`.
+The exception to this rule is examples like the one above, where I'm using `∀ n ≥ N` notation:
+if I were to write this as `∀ N ≤ n`, then it'd more sensibly mean that I'm quantifying over `N`
+with fixed `n`, so `≥` is allowed to make `∀ n ≥ N` read nicely.
+The `simp` tactic will usually do this lemma to make everything into a `≤`:
+-/
+
+example {a b : ℝ} : a ≥ b ↔ b ≤ a := by rw [ge_iff_le]
+
+/-
+The really useful part here is the intersection axiom for filters. In the context of eventually,
+this says that if `p` is eventually true along the filter, and `q` is eventually true along the same
+filter then `p ∧ q` is eventually true along the filter too.
+-/
+
+example {p q : ℕ → Prop} (hp : ∀ᶠ n in atTop, p n) (hq : ∀ᶠ n in atTop, q n) :
+    ∀ᶠ n in atTop, p n ∧ q n :=
+  hp.and hq
+
+/-
+In practice, we often use the `filter_upwards` tactic to handle things like this. Look at the goal
+state after the `filter_upwards` here: it should be very easy!
+Play around with what happens if you remove everything after the `with`, and then if you remove the
+`hp` or `hq`.
+The idea of `filter_upwards` is that if you're trying to prove something is eventually true, and
+you know that other things are eventually true, it lets you safely assume those things are generally
+true, and deduce that what you want holds too.
+-/
+
+example {p q : ℕ → Prop} (hp : ∀ᶠ n in atTop, p n) (hq : ∀ᶠ n in atTop, q n) :
+    ∀ᶠ n in atTop, p n ∧ q n := by
+  filter_upwards [hp, hq] with n hpn hqn
   sorry
 
+/-
+Finally, as promised, here's a really short proof about what happens when you add convergent
+sequences.
+-/
+example {f g : ℕ → ℝ} {a b : ℝ} (hf : Tendsto f atTop (nhds a)) (hg : Tendsto g atTop (nhds b)) :
+    Tendsto (fun n ↦ f n + g n) atTop (nhds (a + b)) :=
+  hf.add hg
+
 end Filter
+
+-- For more about Filters and Topology, see
+-- https://leanprover-community.github.io/mathematics_in_lean/C10_Topology.html
