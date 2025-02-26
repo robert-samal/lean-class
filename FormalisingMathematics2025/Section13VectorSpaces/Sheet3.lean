@@ -11,7 +11,7 @@ import Mathlib.Tactic
 
 We're used to dealing with finite-dimensional vector spaces when we begin studying
 vector spaces, but infinite-dimensional vector spaces exist everywhere (for example
-the polynonial ring `ℝ[X]` is an infinite-dimensional real vector space) and Lean
+the polynomial ring `ℝ[X]` is an infinite-dimensional real vector space) and Lean
 is happy to work with both finite and infinite-dimensional vector spaces.
 
 If `V` is a finite-dimensional vector space, with basis `{e₁,e₂,...,eₙ}`, then
@@ -86,5 +86,4 @@ example (X : Type) (k : Type) [Field k] (f g : X →₀ k) (c : k) : X →₀ k 
 -- is nonzero? If you try `by exact?` below you'll get `Finset.empty` (`exact?` is
 -- designed to prove theorems, not find definitions), but we want
 -- to definitely use `f` so try `by exact? using f` and you'll hopefully get the right answer.
-example (X : Type) (k : Type) [Field k] (f : X →₀ k) : Finset X := by
-  sorry
+example (X : Type) (k : Type) [Field k] (f : X →₀ k) : Finset X := f.support

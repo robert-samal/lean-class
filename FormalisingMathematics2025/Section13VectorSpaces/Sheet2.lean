@@ -32,7 +32,7 @@ So how do we find theorems about `finrank`? Well one way of doing it would be to
 (or command-click on Mac, I think) on `finrank` in some Lean code (not in a comment though)
 and then just browse the file which the definition is in (be careful not to edit it though).
 
-Another way would be to type `FiniteDimensional.finrank` into the online documentation
+Another way would be to type `Module.finrank` into the online documentation
 here https://leanprover-community.github.io/mathlib4_docs/ , and then read the docs instead.
 The most relevant page is
 https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Dimension/Finrank.html .

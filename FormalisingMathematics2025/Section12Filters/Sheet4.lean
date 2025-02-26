@@ -56,7 +56,7 @@ def Tendsto' (f : α → β) (l₁ : Filter α) (l₂ : Filter β) : Prop :=
 
 lemma tendsto_atTop_atTop_iff {α β : Type*} [Nonempty α] [LinearOrder α] [LinearOrder β]
     (f : α → β) :
-    Tendsto f atTop atTop ↔ ∀ b : β, ∃ i : α, ∀ a : α, i ≤ a → b ≤ f a := by
+    Tendsto f atTop atTop ↔ ∀ M : β, ∃ N : α, ∀ a : α, N ≤ a → M ≤ f a := by
   rw [tendsto_atTop_atTop]
 
 /-
@@ -107,6 +107,25 @@ example {p q : ℕ → Prop} (hp : ∀ᶠ n in atTop, p n) (hq : ∀ᶠ n in atT
     ∀ᶠ n in atTop, p n ∧ q n := by
   filter_upwards [hp, hq] with n hpn hqn
   sorry
+
+example {x ε : ℝ} (hε : 0 < ε) : ∀ᶠ y in nhds x, |y - x| < ε := by
+  exact eventually_abs_sub_lt x hε
+
+example {N : ℕ} : ∀ᶠ n in atTop, N ≤ n := by
+  exact eventually_ge_atTop N
+
+example {p q : ℕ → Prop} {N M : ℕ} (hp : ∀ n ≥ N, p n) (hq : ∀ n ≥ M, q n) :
+    ∀ᶠ n in atTop, p n ∧ q n := by
+  filter_upwards [eventually_ge_atTop N, eventually_ge_atTop M] with n hN hM
+  sorry
+
+example {p q : ℕ → Prop} {N M : ℕ} (hp : ∀ n ≥ N, p n) (hq : ∀ n ≥ M, q n) :
+    ∃ N', ∀ n ≥ N', p n ∧ q n := by
+  rw [← eventually_atTop]
+  filter_upwards [eventually_ge_atTop N, eventually_ge_atTop M] with n hN hM
+  aesop
+
+-- I don't need to use max any more!
 
 /-
 Finally, as promised, here's a really short proof about what happens when you add convergent
