@@ -39,7 +39,7 @@ variable (k : Type) [Field k] (V : Type) [AddCommGroup V] [Module k V]
 
 /-
 The field `k` acts on the vector space `V` and the notation for this is `•`,
-which is notation for `hSMul` ("heterongenous scalar multiplication :-| ").
+which is notation for `hSMul` ("heterogenous scalar multiplication :-| ").
 We don't use `mul` because for `a * b` to make
 sense in Lean we need `a` and `b` to have the same type. Here `a : k` and `v : V`
 so this isn't satisfied.

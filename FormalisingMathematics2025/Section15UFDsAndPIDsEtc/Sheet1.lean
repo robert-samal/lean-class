@@ -37,7 +37,7 @@ example (I : Ideal R) : I.IsPrincipal := sorry
 
 example (I : Ideal R) : ∃ j, I = Ideal.span {j} := sorry
 
--- product of two PIDs isn't a PID, but only becuase it's not a domain
+-- product of two PIDs isn't a PID, but only because it's not a domain
 example (A B : Type) [CommRing A] [CommRing B]
     [IsPrincipalIdealRing A] [IsPrincipalIdealRing B] :
     IsPrincipalIdealRing (A × B) where

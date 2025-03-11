@@ -67,7 +67,7 @@ example (p q : ℝ) (hp : 1 < p) (hq : 1 < q) (hpq : 1 / p + 1 / q = 1) : p.IsCo
   sorry
 
 -- it's a structure
--- We have a verison of Hoelder's inequality.
+-- We have a version of Hoelder's inequality.
 example (q : ℝ≥0∞)  (hpq : p.toReal.IsConjExponent q.toReal)
     (f : lp E p) (g : lp E q) :
     ∑' i : I, ‖f i‖ * ‖g i‖ ≤ ‖f‖ * ‖g‖ :=

@@ -240,7 +240,7 @@ example (f g : ℕ → Ω → ℝ) (a b : ℝ)
 /-
 I hope that you found the above examples slightly annoying, especially the
 third example: why can't we just `rw h`?! Of course, while we often do do so on
-paper, rigourously, such a rewrite require some logic. Luckily, what we normally
+paper, rigorously, such a rewrite require some logic. Luckily, what we normally
 do on paper is most often ok and we would like to do so in Lean as well. While
 we can't directly rewrite almost everywhere equalities, we have the next best
 thing: the `filter_upwards` tactic. See the tactic documentation here:
