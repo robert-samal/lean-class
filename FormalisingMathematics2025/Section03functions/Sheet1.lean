@@ -38,7 +38,7 @@ and satisfying some axioms, and so on.
 -- We can also make our own expressions, and give them names
 def myFavouriteNumber : ℕ := 7
 
-def yourFavouriteNumber : ℕ := sorry
+def yourFavouriteNumber : ℕ := 23
 
 #check myFavouriteNumber
 
@@ -91,15 +91,17 @@ theorem my_proof : MyVeryEasyProposition := fun n => ⟨n, le_rfl⟩
 example (a b : ℕ) : a + a * b = (b + 1) * a :=
   (add_comm a (a * b)).trans ((mul_add_one a b).symm.trans (mul_comm a (b + 1)))
 
--- Very clever tactics
-example (a b : ℕ) : a + a * b = (b + 1) * a := by ring
+-- So we have very clever tactics to produce them instead
+-- You can hover over the tactic to see some documentation for it, and there's more information
+-- about `simp` later in this sheet.
 
+example (a b : ℕ) : a + a * b = (b + 1) * a := by ring
 example : 2 + 2 ≠ 5 := by simp
 example : 4 ^ 25 < 3 ^ 39 := by norm_num
 
 open Nat
 
--- Simple tactics
+-- There's also some very simple tactics
 example (a b : ℝ) : a + b = b + a := by
   exact add_comm a b
 example : 3 = 3 := by rfl
@@ -114,6 +116,8 @@ example (a b : ℕ) : a + a * b = (b + 1) * a := by
 open Nat
 
 -- # Some more difficult proofs
+-- Here's a definition of the factorial function: it shows how I can define a function on the
+-- natural numbers inductively
 def myFactorial : ℕ → ℕ
   | 0 => 1
   | n + 1 => (n + 1) * myFactorial n
@@ -121,12 +125,16 @@ def myFactorial : ℕ → ℕ
 #check myFactorial
 
 -- Lean can compute too!
--- #eval myFactorial 10
--- sometimes useful for sanity-checking definitions
+#eval myFactorial 10
+-- This is sometimes useful for sanity-checking definitions, but only works for "computable" things
 
 theorem myFactorial_add_one (n : ℕ) : myFactorial (n + 1) = (n + 1) * myFactorial n := rfl
 theorem myFactorial_zero : myFactorial 0 = 1 := rfl
 
+-- Here's an example of a more complex proof about the factorial function, see if you can follow
+-- what's happening
+-- Try putting your cursor at the end of the `induction n` line, and look at the two goals which
+-- show up
 theorem myFactorial_pos (n : ℕ) : 0 < myFactorial n := by
   induction n
   case zero =>
@@ -134,7 +142,7 @@ theorem myFactorial_pos (n : ℕ) : 0 < myFactorial n := by
     simp
   case succ n ih =>
     rw [myFactorial_add_one]
-    positivity
+    positivity -- this tactic tries to prove things of the form ≠ 0, ≥ 0 or > 0
 
 -- Expressions and types, every expression has a type
 -- A proof has type given by what it's proved!
@@ -143,31 +151,38 @@ theorem myFactorial_pos (n : ℕ) : 0 < myFactorial n := by
 -- Lean is *dependently typed* (unlike C, Java, Haskell), which means that types can depend on
 -- terms. Not every theorem proving language is dependently typed, but it's sometimes useful in
 -- practice when formalising maths.
+-- Take a look at the types of these two things:
+-- `Fin` takes in a value, an element of the natural numbers, and *produces* a type.
+-- (`Fin n` is the type whose elements are natural numbers less than `n`)
 #check Fin 10
 #check Fin
 
+-- and here's a simple proof about the size of this (finite) type
 example (n : ℕ) : Fintype.card (Fin n) = n := by simp
 
--- ## terminal simps
+-- ## Simp
+-- The `simp` tactic is Lean's simplifier. A bunch of lemmas throughout mathlib are tagged
+-- `@[simp]`, meaning they're simplification lemmas, and so `simp` will try to use them to prove the
+-- goal.
+
+-- But this means that running `simp` can sometimes be quite slow, or more concerningly,
+-- if a new lemma gets added to mathlib and tagged `simp`, it could break an old `simp` proof.
+-- As a consequence, for maintainability of Lean proofs, a *non-terminal* use of the `simp` tactic
+-- is strongly discouraged. Non-terminal here means that it's a tactic call which isn't the one
+-- closing the goal. A terminal simp is usually fine, since new simp lemmas usually can't break
+-- these, but non-terminal `simp`s are frowned upon.
+-- Fortunately, however, there's a nice way to fix them: changing `simp` to `simp?` gives a code
+-- action telling you which lemmas `simp` actually used, and produces a call to `simp only` instead.
+-- This is a restricted version of `simp` which simplifies in the same way, but *only* uses the
+-- lemmas listed.
+-- Here's an example:
 example (n : ℕ) : Fintype.card (Fin n) = n := by simp?
-
--- ## naming
--- https://leanprover-community.github.io/contribute/naming.html
-
--- ## hierarchy!
-#check 3
-#check ℕ
-#check 4 = 4
-#check Prop
-#check Type
-#check Type 1
-#check Type 2
-
-#check Type 0
-
--- myproof : myVeryEasyProposition : Prop : Type : Type 1 : Type 2 : Type 3 : ...
+-- Changing `simp` to `simp?` is sometimes called "squeezing" it, and it has a secondary use of
+-- helping you figure out what `simp` actually did, or finding lemmas which are useful in your
+-- situation.
 
 -- ## Practicing with the `rw` tactic
+-- Let's get some practice with the `rw` tactic for equalities now.
 
 example (a b c : ℝ) : a * b * c = b * (a * c) := by
   rw [mul_comm a b]
@@ -319,6 +334,7 @@ end
 
 -- The nth_rw tactic allows you to be more precise about which occurrence of a subterm you want to
 -- rewrite.
+-- Usually this isn't necessary, but it's occasionally very helpful.
 example (a b c : ℕ) (h : a + b = c) : (a + b) * (a + b) = a * c + b * c := by
   nth_rw 2 [h]
   rw [add_mul]
