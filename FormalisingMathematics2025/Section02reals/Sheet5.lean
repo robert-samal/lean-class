@@ -12,14 +12,6 @@ namespace Section2sheet5
 
 open Section2sheet3solutions
 
-noncomputable def f : ℕ → ℝ
-| 0 => 0
-| n + 1 => Real.sqrt 3
-
-
-lemma f_zero : f 0 = 0 := by simp [f]
-lemma f_succ {n : ℕ} : f (n + 1) = Real.sqrt 3 := by simp [f]
-
 -- you can maybe do this one now
 theorem tendsTo_neg {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fun n ↦ -a n) (-t) := by
   rw [tendsTo_def] at ha ⊢
