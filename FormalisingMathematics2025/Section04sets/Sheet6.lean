@@ -49,7 +49,7 @@ example : f '' S ⊆ T ↔ S ⊆ f ⁻¹' T := by sorry
 -- pullback is not so hard
 example : id ⁻¹' S = S := by sorry
 
--- pushforward is a little trickier. You might have to `ext x, split`.
+-- pushforward is a little trickier. You might have to `ext x`, `constructor`.
 example : id '' S = S := by sorry
 
 -- Now let's try composition.
