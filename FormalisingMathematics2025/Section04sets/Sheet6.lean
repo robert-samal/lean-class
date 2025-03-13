@@ -42,7 +42,7 @@ example : S ⊆ f ⁻¹' (f '' S) := by sorry
 
 example : f '' (f ⁻¹' T) ⊆ T := by sorry
 
--- `library_search` will do this but see if you can do it yourself.
+-- `exact?` will do this but see if you can do it yourself.
 example : f '' S ⊆ T ↔ S ⊆ f ⁻¹' T := by sorry
 
 -- Pushforward and pullback along the identity map don't change anything
