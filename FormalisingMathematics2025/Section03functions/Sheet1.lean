@@ -22,23 +22,27 @@ and satisfying some axioms, and so on.
 
 -- Lean is a dependently-typed language
 -- Every expression has a type, and `#check` can tell you the type
-
 #check 2
 #check 17 + 4
 #check π
 #check rexp 1
 
+-- You can read these as saying "2 has type ℕ", and note the `:` relation is definitely not
+-- symmetric.
+
 -- (If you get the Error Lens extension in VSCode, these show up nicely)
 
 -- Types are expressions too!
-
 #check ℕ
 #check ℝ
 
--- We can also make our own expressions, and give them names
+/-- We can also make our own expressions, and give them names. -/
 def myFavouriteNumber : ℕ := 7
 
-def yourFavouriteNumber : ℕ := 23
+/-- For any expression in Lean, I can use `sorry` as a placeholder to mean "I'll fill this in
+later". Any definition or proof that uses `sorry` will give a warning. Let's fill this one in now
+with your favourite number! -/
+def yourFavouriteNumber : ℕ := sorry
 
 #check myFavouriteNumber
 
@@ -48,44 +52,68 @@ example : ℕ := 2
 -- # But this isn't maths!
 
 -- The type `Prop` contains `Prop`ositions...
-
+-- They could be true:
 #check 2 + 2 = 4
 #check rexp 1 < π
-
+-- or false:
 #check 2 + 2 = 5
+-- or open.
 #check Irrational (rexp 1 + π)
+-- This one was open, but now it's not!
+-- I can use any definition that was made *earlier* in the file, or imported
 #check myFavouriteNumber = yourFavouriteNumber
 
-def MyDifficultProposition : Prop := ∀ n : ℕ, ∃ p, n ≤ p ∧ Prime p ∧ Prime (p + 2)
-def MyEasyProposition : Prop := ∀ n : ℕ, ∃ p, n ≤ p ∧ Prime p ∧ Prime (p + 2) ∧ Prime (p + 4)
+-- Here are some more propositions, this time with names. The first one is easy to see is true...
 def MyVeryEasyProposition : Prop := ∀ n : ℕ, ∃ p, n ≤ p
+-- ...the second is a little trickier, but not hard to show it's false...
+def MyEasyProposition : Prop := ∀ n : ℕ, ∃ p, n ≤ p ∧ Prime p ∧ Prime (p + 2) ∧ Prime (p + 4)
+-- ...and the last one is hopefully recognisable as an open problem!
+def MyDifficultProposition : Prop := ∀ n : ℕ, ∃ p, n ≤ p ∧ Prime p ∧ Prime (p + 2)
 
--- Key! If `p : Prop`, an expression of type `p` is a proof of `p`.
+-- *Key!* If `p : Prop`, an expression of type `p` is a proof of `p`.
 
-example : 2 + 2 = 4 := rfl
-example : 2 + 2 ≠ 5 := by simp
-example : ∀ n : ℕ, 2 ≤ n → ∃ x y z : ℕ, 4 * x * y * z = n * (x * y + x * z + y * z) := sorry
--- Erdős-Strauss conjecture
+-- The syntax to make these expressions can be just like we saw before, except with `theorem`
+-- rather than `def`.
+theorem two_plus_two_equals_four : 2 + 2 = 4 := rfl
+-- The keyword `theorem` might feel pretentious for a basic claim like this, and so `lemma` works
+-- too:
+lemma two_plus_two_equals_four_again : 2 + 2 = 4 := rfl
+-- The `rfl` here refers to reflexivity of equality, and Lean here is checking that both sides
+-- are actually the same, so this is true by reflexivity.
 
-example (n : ℕ) (hn : 2 ≤ n) :
-  ∃ x y z : ℕ, 4 * x * y * z = n * (x * y + x * z + y * z) := sorry
+-- Here's another proof, this time slightly less trivial. We'll see `simp` in more detail later.
+theorem two_plus_two_not_equals_five : 2 + 2 ≠ 5 := by simp
+
+-- Finally, we can also use `sorry` for proofs, for example for the Erdős-Straus conjecture, which
+-- is an open problem in number theory.
+-- Just like before, this gives me a yellow warning, because I've used `sorry` here instead of
+-- giving the proof.
+theorem erdos_straus :
+    ∀ n : ℕ, 2 ≤ n → ∃ x y z : ℕ, 4 * x * y * z = n * (x * y + x * z + y * z) :=
+  sorry
 
 -- # How can we make these expressions?
+-- But now the real question is: now that we know certain expressions correspond to proofs, how can
+-- we make such expressions?
 
--- Simple proof terms
-example : True := trivial
-example : 2 = 2 := rfl
-example (a b : ℕ) : a + b = b + a := Nat.add_comm a b
+-- The most basic way is via simple proof terms. Here are two examples of "built-in" proof terms:
+theorem true : True := trivial
+theorem two_equals_two : 2 = 2 := rfl
+-- And here are two examples of proof terms I can take from the library:
+theorem addition_commutes : ∀ (a b : ℕ), a + b = b + a := Nat.add_comm
+theorem multiplication_commutes (a b : ℕ) : a * b = b * a := Nat.mul_comm a b
+-- Observe the second example is stated slightly differently - I've moved `a` and `b` into the
+-- "assumptions" for the theorem instead; and so the proof term changes a little to say I want to
+-- use it for `a` and `b`.
 
-example (a b : ℕ) : a * b = b * a := Nat.mul_comm a b
-
-theorem my_proof : MyVeryEasyProposition := fun n => ⟨n, le_rfl⟩
-
+def MySuperEasyProposition : Prop := 2 = 2
+theorem my_proof : MySuperEasyProposition := rfl
+-- Look closely at their types!
 #check MyVeryEasyProposition
 #check my_proof
 -- my proposition "has type Proposition", or "is a proposition"
--- my proof "has type my proposition", or "has type ∀ n : ℕ, ∃ p, n ≤ p",
---    or "is a proof of ∀ n : ℕ, ∃ p, n ≤ p"
+-- my proof "has type my proposition", or "has type 2 = 2",
+--    or "is a proof of 2 = 2"
 
 -- But just proof terms get ugly...
 example (a b : ℕ) : a + a * b = (b + 1) * a :=
@@ -94,7 +122,6 @@ example (a b : ℕ) : a + a * b = (b + 1) * a :=
 -- So we have very clever tactics to produce them instead
 -- You can hover over the tactic to see some documentation for it, and there's more information
 -- about `simp` later in this sheet.
-
 example (a b : ℕ) : a + a * b = (b + 1) * a := by ring
 example : 2 + 2 ≠ 5 := by simp
 example : 4 ^ 25 < 3 ^ 39 := by norm_num
