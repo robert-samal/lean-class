@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- imports all of the tactics in Lean's maths library
+-- set_option linter.unusedVariables false
+-- set_option linter.unusedTactic false
 
 
 /-!
@@ -67,6 +69,11 @@ example (hP : P) (hQ : Q) (hR : R) : P := by
   -- note that `exact P` does *not* work. `P` is the proposition, `hP` is the proof.
   exact hP
   done
+
+theorem my_funny_theorem (hP : P) (hQ : Q) (hR : R) : P := by
+  -- note that `exact P` does *not* work. `P` is the proposition, `hP` is the proof.
+  exact hP
+
 
 -- Same example: assume that `P` and `Q` and `R` are true, but this time
 -- give the assumptions silly names. Deduce that `P` is true.
