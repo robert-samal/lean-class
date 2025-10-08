@@ -1,5 +1,0 @@
-refine (true, \<_,_,_\>)
-rcases
-specialize (sets sht 1)
-
-
