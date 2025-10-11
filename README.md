@@ -1,10 +1,10 @@
 # Formalising Mathematics
 
-This is the repository for Robert Samal's class "LEAN – Computer-Assisted Proofs". 
+This is the repository for Robert Samal's class "LEAN – Computer-Assisted Proofs".
 
-It started as a fork of the [repository for Bhavik Mehta's 2025 course on formalising mathematics](https://github.com/b-mehta/formalising-mathematics-notes). 
+It started as a fork of the [repository for Bhavik Mehta's 2025 course on formalising mathematics](https://github.com/b-mehta/formalising-mathematics-notes).
 
-I expect modifications in the latter parts of the semester. 
+I expect modifications in the latter parts of the semester.
 
 
 ## Local installation
@@ -51,4 +51,4 @@ Just click here: [![Open in Codespaces](https://github.com/codespaces/badge.svg)
 
 ## Course notes
 
-TODO
+https://iuuk.mff.cuni.cz/~samal/vyuka/Lean/
