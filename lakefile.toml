@@ -1,5 +1,5 @@
-name = "FormalisingMathematics2025"
-defaultTargets = ["FormalisingMathematics2025"]
+name = "Class_materials"
+defaultTargets = ["Class_materials"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -14,4 +14,4 @@ name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
 
 [[lean_lib]]
-name = "FormalisingMathematics2025"
+name = "Class_materials"
