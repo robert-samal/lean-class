@@ -29,7 +29,7 @@ and then select the directory where you want the project installed, type in the 
 
 ![File explorer](png/file_explorer.png?raw=true "File explorer")
 
-and navigate to the `FormalisingMathematics2025` directory, where you should find a whole bunch of directories containing the exercises.
+and navigate to the `Class_materials` directory, where you should find a whole bunch of directories containing the exercises.
 
 ### Local installation via command line
 
@@ -41,7 +41,7 @@ cd lean-class
 lake exe cache get
 ```
 
-Now open the folder `formalising-mathematics-notes` which you just created, using VS Code's "open folder" functionality. You will find all the exercises for the course inside a subdirectory called `FormalisingMathematics2025` (don't confuse these two
+Now open the folder `lean-class` which you just created, using VS Code's "open folder" functionality. You will find all the exercises for the course inside a subdirectory called `Class_materials` (don't confuse these two
 directories! One has hyphens, the other does not).
 ## Online play
 
