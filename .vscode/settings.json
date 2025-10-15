@@ -17,7 +17,7 @@
         "lean-toolchain": true,
         "mathematics_in_lean.pdf": true,
         "MIL.lean": true,
-        "README.md":true,
+        "README.md":false,
 	".lake": true,
 	".devcontainer": true,
 	".github": true
