@@ -3,7 +3,7 @@ import Mathlib.Tactic
 import Class_materials.Solutions.Class04.Reals5
 -- import the definition of `TendsTo` and the theorems we proved from previous sheets
 -- if it does not work for you, pull from the repo
--- Alternately, uncomment the definition below for the definiton
+-- Alternately, uncomment the definition below for the definition
 -- And perhaps copy-paste the theorems `tendsTo_neg`, `tendsTo_add `
 
 /-
