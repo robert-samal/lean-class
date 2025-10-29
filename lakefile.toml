@@ -5,9 +5,9 @@ defaultTargets = ["Class_materials"]
 pp.unicode.fun = true
 autoImplicit = false
 relaxedAutoImplicit = false
-linter.style.longLine = true
-linter.unusedTactic = false
-linter.unusedVariables = false
+weak.linter.style.longLine = true
+weak.linter.unusedTactic = false
+weak.linter.unusedVariables = false
 
 [[require]]
 name = "mathlib"
