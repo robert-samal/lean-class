@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2025 Robert Šámal. All rights reserved.
+Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Robert Šámal, Bhavik Mehta, Kevin Buzzard
+Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- imports all the Lean tactics
 
@@ -76,11 +76,6 @@ example : a ≠ b := by
   cases h
 
 -- closes the goal.
--- You may be surprised by the use of `cases` for both our new type `X` and the property `a=b`.
--- However, `a=b` means `Eq a b` and this is in fact also an inductive type!
-#print Eq
-
-
 -- We defined `X` using the `inductive` keyword and these funny `|` "pipe" symbols.
 -- If you want to define a function from `X` to another type you can use `def`
 -- and the `|` symbols again.
@@ -94,16 +89,14 @@ example : f a = 37 := by-- true by definition
 
 -- Here is a proof that `f` is an injective function.
 -- At some point in this proof there are 9 goals; you can see them
--- by moving past `cases y`. The <;> means "apply the next tactic to all the
--- goals produced by the last tactic".
-theorem ABC : Function.Injective f := by
+-- by changing the `;` after `cases y` to a `,`. The <;> means
+-- "apply the next tactic to all the goals produced by the last tactic".
+example : Function.Injective f := by
   intro x y h
   cases x <;> cases y -- at this point there are 9 goals, and for each goal either the conclusion
-    -- is true by `rfl`, or there's a false hypothesis `h`.
+    -- is true by refl, or there's a false hypothesis `h`.
   all_goals try rfl
   -- 6 goals left
   all_goals cases h -- no cases :-)
-
-#print ABC
 
 end Section3sheet2

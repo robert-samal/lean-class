@@ -33,14 +33,17 @@ function types, subtypes, Pi types, inductive types, (maybe quotient types?)
 
 --/
 
-variable {α β : Type}
+universe u
+
+variable {α β : Type u}
 
 #check α → β
 
 -- Construction:
-#check fun a : α ↦ (sorry : β)
+#check fun a : α => (sorry : β)
 -- Destruction:
 example (f : α → β) (x : α) : β := f x
+
 -- Computation:
 example (f : α → β) (x : α) : (fun y ↦ f y) x = f x := rfl
 
@@ -54,6 +57,7 @@ def small_num : { i : Nat // i < 10 } := ⟨ 0, zero_is_small ⟩
 
 -- ## Dependent types
 
+#check Nat → Nat
 #check (n : Nat) → {i : Nat // i ≤ n}
 
 def pick (n : Nat) : {i : Nat // i ≤ n} :=
@@ -61,7 +65,8 @@ def pick (n : Nat) : {i : Nat // i ≤ n} :=
 -- equivalently:
 -- Subtype.mk 0 (by norm_num)
 
-#check  pick 0
+example : Type := Π n : ℕ, {i : ℕ // i ≤ n}
+#check  pick 10
 
 -- ## Pi (product) types
 variable (Y : ℕ → Set ℕ)
@@ -81,10 +86,15 @@ example : Type := (i : ℕ) → Y i
 
 
 example : ∀ n : ℕ, n + n = 2 * n := by
+  intro n
+  ring
+
+theorem trivi : (n : ℕ) → n + n = 2 * n := by
   sorry
 
-example : (n : ℕ) → n + n = 2 * n := by
-  sorry
+-- We will see such proves later, for now just observe:
+-- trivi 0 has type `0+0 = 2*0`
+-- trivi 1 has type `1+1 = 2*1`
 
 /-! ## Inductive types
 Not only function definitions, but the types themselves can be inductive.
@@ -128,11 +138,12 @@ structure And'' (P Q : Prop) : Prop where
   left : P
   right : Q
 
-#check Prod Prop Prop
+#print Prod
 
 #check And
-#print And'
+#print And
 #print And''
+#print And'
 
 example : And'' (1=1) (2=2) := ⟨ rfl, rfl ⟩
 
@@ -141,6 +152,8 @@ inductive Or' (P Q : Prop) : Prop where
   | inl (hp : P) : Or' P Q
   | inr (hq : Q) : Or' P Q
 
+
+#print Or'
 
 #check Sort 0
 #check Type 0

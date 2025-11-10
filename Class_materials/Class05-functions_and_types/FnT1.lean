@@ -9,7 +9,7 @@ Based on work by Bhavik Mehta.
 -- Thus we have to write Nat instead of ℕ
 -- also, you may get a weird error about "unknown configuration option 'linter.style.longLine'"
 -- in such case, make sure you have update the file lakefile.toml
--- it should contain `weak.linter.style.longLine` instead of `linter.style.longLine`
+
 
 /-!  # Several ways to define a function
   We can use Lean as a normal functional language.
@@ -34,16 +34,18 @@ def square4 := fun x : Nat => x*x
 #print square4
 
 /-!  # Currying
-  We can define higher-order functions (that is, functions with several arguments).
-  Internally, they are represented as functions of one parameter, that return another
-  function of one parameter
+  We can define higher-order functions (that is, functions with several
+  arguments).  Internally, they are represented as functions of one parameter,
+  that return another function of one parameter
 -/
 
 def my_add (x y : Nat) : Nat := x + y
-def my_add_one := my_add 1
+def my_add1 (x : Nat) (y : Nat) : Nat := x + y
 def my_add2 : Nat → (Nat → Nat) := fun x : Nat => (fun y : Nat => x+y)
 def my_add2a : Nat → Nat → Nat := fun x => (fun y => x+y)
 def my_add2b := fun x : Nat => (fun y : Nat => x+y)
+
+def my_add_one := my_add 1
 
 -- not that "the arrows associate to the right"
 
@@ -72,7 +74,7 @@ def myFactorial : Nat → Nat
   | n + 1 => (n + 1) * myFactorial n
 
 -- another, more explicit, syntax for the same
-def myFactorial1b (n: Nat) : Nat :=
+def myFactorial1b (n : Nat) : Nat :=
   match n with
   | 0 => 1
   | n + 1 => (n + 1) * myFactorial n
@@ -101,7 +103,7 @@ Again, using that every n in Nat is either 0 or something plus 1.
   uses the "syntactic sugar": `by induction` tactics
 -/
 
-theorem same_factorials (n : Nat ) : myFactorial n = myFactorial2 n := by
+theorem same_factorials (n : Nat) : myFactorial n = myFactorial2 n := by
   induction n
   case zero =>
     rw [ myFactorial, myFactorial2]
@@ -138,13 +140,17 @@ def isEven : Nat -> Bool
 #eval isEven 4
 #eval isEven 5
 
+example  (n : Nat) : isEven (n*(n+1)) := sorry
 
 -- Try inductive definition for Fibonacci numbers
 -- (defined as $F_0 = 0, F_1 = 1, F_{n+2} = F_n + F_{n+1}$ )
--- (there are several ways, don't worry about efficiency for now
-def Fibonacci : Nat → Nat := sorry
+-- (there are several ways, don't worry about efficiency for now)
+def Fibonacci : Nat → Nat
+  | 0 => 0
+  | 1 => 1
+  | n+2 => Fibonacci n + Fibonacci (n+1)
 
--- #eval Fibonacci 8
+#eval Fibonacci 6
 
 /-! # Function composition
 -/
