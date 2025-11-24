@@ -12,7 +12,7 @@ import Mathlib.Tactic -- imports all the Lean tactics
 Lean notation for the empty subset of `X` is `∅`. Unlike in
 set theory, there is more than one empty set in Lean! Every
 type has an empty subset, and it *doesn't even make sense*
-to ask if `∅ : set ℕ` and `∅ : set ℤ` are equal, because
+to ask if `∅ : Set ℕ` and `∅ : Set ℤ` are equal, because
 they have different types.
 
 At the other extreme, the subset of `X` containing all the terms of type `X`
@@ -37,15 +37,28 @@ and `cases h` will solve a goal if `h : False` (because there are no cases!)
 
 -- set up variables
 variable (X : Type) -- Everything will be a subset of `X`
-  (A B C D E : Set X) -- A,B,C,D,E are subsets of `X`
+  (A B : Set X) -- A,B,C,D,E are subsets of `X`
   (x y z : X) -- x,y,z are elements of `X` or, more precisely, terms of type `X`
 
 open Set
 
-example : x ∈ (univ : Set X) := by sorry
+example : x ∈ (univ : Set X) := by
+--  change True
+  trivial
 
-example : x ∈ (∅ : Set X) → False := by sorry
+example : x ∈ (∅ : Set X) → False := by
+  intro h
+--  exact h
+  cases h
 
-example : A ⊆ univ := by sorry
+example : x ∉ (∅ : Set X) := by
+  by_contra h
+  cases h
 
-example : ∅ ⊆ A := by sorry
+example : A ⊆ univ := by
+  intro a h
+  trivial
+
+example : ∅ ⊆ A := by
+  intro a h
+  cases h

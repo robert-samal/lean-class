@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2025 Bhavik Mehta. All rights reserved.
+Copyright (c) 2025 Robert Šámal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Bhavik Mehta, Kevin Buzzard
+Authors: Robert Šámal, Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic
 
@@ -33,6 +33,7 @@ true, is `{ x : X | P x }`, and the proof that `a ∈ { x : X | P x } ↔ P a` i
 Let's check:
 -/
 
+
 namespace Section4sheet4
 
 theorem mem_def (X : Type) (P : X → Prop) (a : X) :
@@ -49,12 +50,30 @@ open Set
 
 def IsEven (n : ℕ) : Prop :=
   ∃ t, n = 2 * t
-
 -- note that this is *syntactically* equal to `IsEven : ℕ → Prop := fun n ↦ ∃ t, n = 2 * t`
 -- but the way I've written it is perhaps easier to follow.
 
 example : 74 ∈ {n : ℕ | IsEven n} := by
-  sorry
+  rw [mem_def]
+  unfold IsEven
+  use 74/2
+
+example : 74 ∈ {n : ℕ | IsEven n} := ⟨37, by rfl⟩
+--  use 74/2
+
+
+def Set_of_Even : Set ℕ := { n : ℕ | IsEven n }
+
+-- Do not confuse set and type of even numbers:
+def X := { n : ℕ // IsEven n}
+#print X
+#check Set_of_Even
+#check X
+
+-- If you wonder, why do we distinguish these:
+-- Suppose, we define another set/type of natural that are multiple of 3
+-- Now the union of these sets has still type ``Set ℕ``
+-- On the other hand, the union of these type will have a new (aweful) type
 
 -- Let's develop a theory of even real numbers
 def Real.IsEven (r : ℝ) :=
@@ -62,8 +81,16 @@ def Real.IsEven (r : ℝ) :=
 
 -- Turns out it's not interesting
 example : ∀ x, x ∈ {r : ℝ | Real.IsEven r} := by
-  sorry
+  intro x
+  use x/2
+  ring
 
 -- likewise, the theory of positive negative real numbers is not interesting
 example : ∀ x, x ∉ {r : ℝ | 0 < r ∧ r < 0} := by
-  sorry
+  intro x h
+  have h1 := h.left
+  have h2 := h.right
+  have : (0 : ℝ)  < 0 := calc
+    0 < x := h1
+    _ < 0 := h2
+  exact (lt_self_iff_false 0).mp this

@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2025 Robert Šámal. All rights reserved.
+Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Robert Šámal, Bhavik Mehta, Kevin Buzzard
+Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- imports all the Lean tactics
 
@@ -22,6 +22,7 @@ Think a bit about why, it's a good logic exercise.
 
 -/
 
+
 open Set
 
 variable (X : Type) -- Everything will be a subset of `X`
@@ -41,11 +42,6 @@ example : x ∉ (∅ : Set X) := by sorry
 
 example : x ∈ Aᶜ ↔ x ∉ A := by sorry
 
--- surprisingly, the next one is different
-example : x ∉ Aᶜ ↔ x ∈ A := by
-  sorry
-
-example : (∀ x, x ∈ A) ↔ ¬∃ x, x ∈ Aᶜ := by
-  sorry
+example : (∀ x, x ∈ A) ↔ ¬∃ x, x ∈ Aᶜ := by sorry
 
 example : (∃ x, x ∈ A) ↔ ¬∀ x, x ∈ Aᶜ := by sorry

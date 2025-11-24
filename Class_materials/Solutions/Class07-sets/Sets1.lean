@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2025 Bhavik Mehta. All rights reserved.
+Copyright (c) 2025 Robert Šámal. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Bhavik Mehta, Kevin Buzzard
+Authors: Robert Šámal, Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- imports all the Lean tactics
 
@@ -65,10 +65,16 @@ variable (x : X)
 theorem mem_union_iff : x ∈ A ∪ B ↔ x ∈ A ∨ x ∈ B := by
   rfl
 
+#print mem_union_iff
+
 theorem mem_inter_iff : x ∈ A ∩ B ↔ x ∈ A ∧ x ∈ B :=
   -- you don't even have to go into tactic mode to prove this stuff
   Iff.rfl
   -- note no `by` -- this is just the term
+  -- because both sides are internally represented in the same way
+  -- What *tactic* `rfl` does, is it finds the type of object it operates on
+  -- and decides whether it needs to use `Iff.rfl`, `Eq.refl`, etc.
+
 
 /-
 
@@ -80,18 +86,54 @@ Let's prove some theorems.
 
 -/
 
-example : A ⊆ A := by sorry
+theorem subset1 : A ⊆ A := by rfl
+theorem subset2 : A ⊆ A := by
+--  rw [subset_def]
+--  change ∀ x ∈ A, x ∈ A
+  intro x hx
+  exact hx
 
-example : A ⊆ B → B ⊆ C → A ⊆ C := by sorry
+#print subset1
+#print subset2
 
-example : A ⊆ A ∪ B := by sorry
+theorem subset3 : A ⊆ B → B ⊆ C → A ⊆ C := by
+  intro hAB hBC x hx
+  apply hBC
+  apply hAB
+  exact hx
 
-example : A ∩ B ⊆ A := by sorry
+theorem subset4 : A ⊆ B → B ⊆ C → A ⊆ C := by
+  intro hAB hBC x hx
+  exact hBC (hAB hx)
 
-example : A ⊆ B → A ⊆ C → A ⊆ B ∩ C := by sorry
 
-example : B ⊆ A → C ⊆ A → B ∪ C ⊆ A := by sorry
+#print subset3
 
+example : A ⊆ A ∪ B := by
+  intro a h
+  left
+  exact h
+
+
+example : A ∩ B ⊆ A := by
+  intro a h
+  exact h.left
+
+example : A ⊆ B → A ⊆ C → A ⊆ B ∩ C := by
+  intro hAB hAC a hA
+  constructor
+  . exact hAB hA
+  . exact hAC hA
+
+example : B ⊆ A → C ⊆ A → B ∪ C ⊆ A := by
+  intro hBA hCA a hA
+  cases hA with
+  | inl h => exact hBA h
+  | inr h => exact hCA h
+
+
+-- hw
 example : A ⊆ B → C ⊆ D → A ∪ C ⊆ B ∪ D := by sorry
 
+-- hw?
 example : A ⊆ B → C ⊆ D → A ∩ C ⊆ B ∩ D := by sorry
