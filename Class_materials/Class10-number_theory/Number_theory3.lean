@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic
+import Mathlib
 
 namespace Section15Sheet3
 /-
@@ -26,8 +27,22 @@ they're the same is fiddly)
 
 -- The number-theoretic heart of the argument.
 -- Note that "divides" is `\|` not `|`
-theorem divides_of_cong_four (t : ℕ) :
-    5 ∣ 4 * (65 * t + 4) ^ 2 + 1 ∧ 13 ∣ 4 * (65 * t + 4) ^ 2 + 1 := sorry
+theorem divides_of_cong_four (t : ℤ) :
+    5 ∣ 4 * (65 * t + 4) ^ 2 + 1 ∧ 13 ∣ 4 * (65 * t + 4) ^ 2 + 1 := by
+    ring_nf
+    omega
+
+-- alternately:
+theorem divides_of_cong_four2 (t : ℤ) :
+    5 ∣ 4 * (65 * t + 4) ^ 2 + 1 ∧ 13 ∣ 4 * (65 * t + 4) ^ 2 + 1 := by
+    ring_nf
+    constructor
+    . use 13+t*416+t^2*3380
+      ring
+    . use (65/13)+t*(2080/13)+t^2*(16900/13)
+      ring
+
+
 
 -- There are arbitrarily large solutions to `5 ∣ 4*n²+1 ∧ 13 ∣ 4*n²+1`
 theorem arb_large_soln :
@@ -38,13 +53,21 @@ theorem arb_large_soln :
 -- This is not number theory any more, it's switching between two
 -- interpretations of "this set of naturals is infinite"
 theorem infinite_iff_arb_large (S : Set ℕ) :
-    S.Infinite ↔ ∀ N, ∃ n > N, n ∈ S := sorry
+    S.Infinite ↔ ∀ N, ∃ n > N, n ∈ S := by
+    Set.Infinite.
 
 -- Another way of stating the question (note different "|" symbols:
 -- there's `|` for "such that" in set theory and `\|` for "divides" in number theory)
+
+def is_a_solution (n : ℕ ) : Prop :=
+  5 ∣ 4 * n ^ 2 + 1 ∧ 13 ∣ 4 * n ^ 2 + 1
+
 theorem infinite_setOf_solutions :
-    {n : ℕ | 5 ∣ 4 * n ^ 2 + 1 ∧ 13 ∣ 4 * n ^ 2 + 1}.Infinite := by
+    {n : ℕ | is_a_solution n}.Infinite := by
   rw [infinite_iff_arb_large]
   exact arb_large_soln
+
+
+example (m : ℕ ) : 65*(m+1) ≥ 65 := by omega
 
 end Section15Sheet3

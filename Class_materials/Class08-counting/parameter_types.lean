@@ -31,6 +31,8 @@ def addOne (n : Nat) : Nat :=
 -- #eval addOne 5.      -- error: wrong type
 -- #eval addOne     -- error: missing explicit argument
 
+#check addOne
+
 /-
 Semantics:
 - The function's type is `Nat → Nat`.
@@ -55,21 +57,26 @@ Typical uses:
 * Data that is "contained" in some explicit proof.
 -/
 
-def myId {α : Type} (x : α) : α := x
+def myId {α : Type} (x : α) : α:= x
 
+-- #eval myId Nat 7
 #check myId "hello"
 #check myId 7
+#check myId 7.
 
 #eval myId "hello"
 #eval myId 7
+#eval myId 7.
 
 #eval myId (α := Nat) 7
-#eval @myId Nat 7
+#eval @myId Float 7
 
 
 -- Why is the following an error?
--- def myadd {α : Type} (x : α) (y : α) : α := x + y
+def myadd {α : Type} (x : α) (y : α) : α := x + y
 
+def myadd2 {α : Type} [Add α] (x : α) (y : α) : α := x + y
+def myadd3 {α : Type} [HAdd α α α] (x : α) (y : α) : α := x + y
 
 -- A polymorphic identity function with an implicit type parameter.
 def addTwo {α : Type} [Add α] [OfNat α 2] (x : α) : α :=
@@ -130,11 +137,14 @@ without Lean eagerly instantiating all implicits.
 def idOrdinary {α : Type} : α → α :=
   fun x => x
 
+-- def idStrict {{ α : Type}} : α → α :=
 def idStrict ⦃α : Type⦄ : α → α :=
   fun x => x
 
--- def f := onlyOrdinary  -- this is an error!
-def g := onlyStrict
+-- def f := idOrdinary  -- this is an error!
+def g := idStrict
+
+#check g
 
 /-!
 ## 4. Instance implicits `[inst : C α]` (typeclass parameters)

@@ -11,6 +11,7 @@ example : #(s ×ˢ t) = #s * #t := by rw [card_product]
 example : #(s ×ˢ t) = #s * #t := by simp
 
 example : #(s ∪ t) = #s + #t - #(s ∩ t) := by rw [card_union]
+example : #(s ∪ t) = #s + #t - #(s ∩ t) := card_union s t
 
 example (h : Disjoint s t) : #(s ∪ t) = #s + #t := by rw [card_union_of_disjoint h]
 example (h : Disjoint s t) : #(s ∪ t) = #s + #t := by simp [h]
@@ -19,6 +20,26 @@ example (h : Function.Injective f) : #(s.image f) = #s := by rw [card_image_of_i
 
 example (h : Set.InjOn f s) : #(s.image f) = #s := by rw [card_image_of_injOn h]
 
+-- What we want to do?
+
+-- counting number of functions s → t
+
+-- why doesn't this work??
+-- example : card (α → β) = (card α)^(card β) := by simp
+
+-- counting injective functions
+-- * between fintypes
+-- * between finsets
+
+-- counting subsets
+
+-- number of subsets of (Fin n) is 2^n
+
+-- Principle of inclusion and exclusion?
+-- * write it as a statement
+-- * prove it (using mathlib)
+
+
 section
 open Fintype
 -- # Same with types
@@ -26,11 +47,25 @@ open Fintype
 
 variable {α β : Type*} [Fintype α] [Fintype β]
 
-example : card (α × β) = card α * card β := by simp
+example : card (α × β) = card α * card β := by
+  exact card_prod α β
 
 example : card (α ⊕ β) = card α + card β := by simp
 
+#eval card (Fin 37)
+
+
+#eval card (Fin 37 ⊕ Fin 39)
+
+#eval card (Fin 37 ⊕ Fin 37)
+
 example (n : ℕ) : card (Fin n → α) = (card α)^n := by simp
+
+
+#check α
+#check (α → β)
+-- why doesn't this work??
+-- example : card (α → β) = (card α)^(card β) := by simp
 
 variable {n : ℕ} {γ : Fin n → Type*} [∀ i, Fintype (γ i)]
 
@@ -41,10 +76,6 @@ example : card (Σ i, γ i) = ∑ i, card (γ i) := by simp
 end
 
 -- # Some exercise from DM
-
-
-example : #(s → t) = #t^#s := by
-  exact?
 
 
 

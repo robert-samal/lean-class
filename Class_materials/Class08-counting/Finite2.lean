@@ -52,17 +52,25 @@ example : (⊥ : Finset X) = (∅ : Finset X) := by
 -- When we specify that X is a finite type, it works
 example [Fintype X] : Finset X := ⊤
 
+-- Why this does not work?
+-- example [Finite X] : Finset X := ⊤
+
 -- If `Y` is another type, then you can push finsets forward along maps from X to Y
 -- using `Finset.image`
 variable (Y : Type) (f : X → Y)
 
 example (S : Finset X) : Finset Y :=
   Finset.image f S
+--  f '' S
   -- We cannot do ``f '' S`` though -- that has type ``Set Y``, not ``Finset Y``
 
 -- You can use dot notation to make this shorter
 example (S : Finset X) : Finset Y :=
   S.image f
+
+-- to make this work, we would need to assume f is injective, or something
+--example (T : Finset Y) : Finset X :=
+--  T.preimage f
 
 -- See if you can prove these. You'll have to figure out the basic API
 -- for `Finset.image`. These theorems are in the library -- your job is simply to find them.

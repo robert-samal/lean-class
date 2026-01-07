@@ -49,7 +49,8 @@ example (n : ℕ) : ℤ :=
 
 -- works fine
 example (n : ℕ) : ℤ :=
-  ↑n
+  Int.ofNat n
+  -- ↑n
 
 -- what it does under the hood
 
@@ -135,7 +136,50 @@ example (a b c : ℕ) (h : a - b = c) (hab : b ≤ a) : (a : ℤ) - b = c := by
 
 This is the first question in Sierpinski's book.
 
-Hint: n+1 divides n^2-1.
+Hint: n+1 divides n^2-1 = (n-1)*(n+1).
+
 
 -/
-example (n : ℕ) (hn : 0 < n) : n + 1 ∣ n ^ 2 + 1 ↔ n = 1 := sorry
+
+theorem easy (n : ℕ ) (hn : 0 < n): n^2 - 1 = (n+1)*(n-1) := by
+  have h_le : 1 ≤ n^2 := by
+    exact Nat.one_le_pow 2 n hn
+  -- Now zify knows it's safe
+  zify [h_le, hn]
+  ring
+
+
+example (n : ℕ) (hn : 0 < n) : n + 1 ∣ n ^ 2 + 1 ↔ n = 1 := by
+   have h : n^2-1 = (n+1)*(n-1) := easy n hn
+   constructor
+   . intro h2
+     have h3 : n+1 ∣ 2 := by
+       refine Nat.dvd_two_of_totient_le_one ?_ ?_
+     sorry
+   . intro h2
+     rw [h2]
+     norm_num
+
+
+
+
+
+
+example (n : ℕ) (hn : 0 < n) : n + 1 ∣ n ^ 2 + 1 ↔ n = 1 := by
+  constructor
+  · intro h
+    -- 1. Algebraic Rewrite: n^2 + 1 = (n + 1)(n - 1) + 2
+    -- We use `zify` to switch to Integers so subtraction (n-1) behaves nicely
+    -- 2. Substitute into the hypothesis
+    -- 3. Simplify divisibility: (n+1) | (n+1)*k + 2 ↔ (n+1) | 2
+    rw [Nat.dvd_add_iff_left (Nat.dvd_mul_right _ _)] at h
+
+    -- 4. Analyze divisors of 2
+    -- Since n > 0, n + 1 ≥ 2. The only divisor of 2 that is ≥ 2 is 2 itself.
+    have h_le : n + 1 ≤ 2 := Nat.le_of_dvd (by norm_num) h
+    linarith [hn] -- Solve the inequality n + 1 ≤ 2 given n > 0
+
+  · intro h
+    -- The reverse direction is trivial calculation
+    rw [h]
+    norm_num
