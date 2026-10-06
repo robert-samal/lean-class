@@ -114,6 +114,7 @@ example (fish : P) (giraffe : Q) (dodecahedron : R) : P := by
 /-
 However, if you try to give them all the same name,
 then you can only refer to the most recent one.
+DON'T!
 -/
 
 example (h : P) (h : Q) (h : R) : R := by

@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026 Thomas Browning. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Thomas Browning, Kevin Buzzard, Bhavik Mehta
+Authors: Thomas Browning, Kevin Buzzard, Bhavik Mehta, Robert Šámal
 -/
 module
 
@@ -73,15 +73,34 @@ example (hPQ : P → Q) (hP : P) : Q := by
   exact hP
 
 /-
-The second is `specialize` which works when one of your hypotheses is an
-implication whose assumption matches another hypothesis. For example, if you
-have hypotheses `hP : P` and `hPQ : P → Q`, then `specialize hPQ hP` will
-replace the hypothesis `hPQ` with `Q`.
+The notation `P → Q` looks rather like a function from `P` to `Q`.
+Indeed, the truth of this theorem is something, that maps a proof of `P`
+to a proof of `Q`. We will speak about this later, for now let's just
+observe it really can be written this way:
+-/
+
+example (hPQ : P → Q) (hP : P) : Q := hPQ hP
+
+/- In other words, the keyword `by` is a tactics, or metaprogram, that will
+allow us to create this `hPQ hP` program in a more natural way.
+-/
+
+/-
+The second is tactic to use in this example is `specialize` which works when one
+of your hypotheses is an implication whose assumption matches another
+hypothesis. For example, if you have hypotheses `hP : P` and `hPQ : P → Q`, then
+`specialize hPQ hP` will replace the hypothesis `hPQ` with `Q`.
 -/
 
 example (hPQ : P → Q) (hP : P) : Q := by
   specialize hPQ hP
   exact hPQ
+
+-- alternative way:
+
+example (hPQ : P → Q) (hP : P) : Q := by
+  apply hPQ at hP
+  exact hP
 
 /-
 One way of understanding the difference between `specialize` and `apply` is in
@@ -99,13 +118,13 @@ goal from the intermediate goal, and then prove the intermediate goal.
 
 example : Q := by
   have hP : P := by
-    sorry
-  sorry
+    sorry -- proof of P
+  sorry -- proof of Q, using P
 
 example : Q := by
   suffices hP : P by
-    sorry
-  sorry
+    sorry -- proof of Q, using P
+  sorry -- proof of P
 
 /-
 When the goal is of the form `P ∨ Q`, you can choose between proving `P` and
