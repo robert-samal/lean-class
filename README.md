@@ -46,13 +46,4 @@ Now open the folder which you just created, using VS Code's "open folder" functi
 
 ## Online play
 
-If you don't have the 4.5 gigabytes necessary to install all this, or if your computer is too slow to make the experience of using Lean on it fun (you'll need at least 8 gigs of ram, for example), then you can do the course exercises through a web browser (and you don't need to install anything onto your computer using this method).
-
-### Method 1: via Gitpod.
-
-Just click here: [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/robert-samal/lean-class)
-
-### Method 2: via Codespaces
-
-Just click here: [![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/robert-samal/lean-class)
-
+You may use the [live-lean server](https://live.lean-lang.org/). 
