@@ -117,13 +117,15 @@ goal from the intermediate goal, and then prove the intermediate goal.
 -/
 
 example : Q := by
-  have hP : P := by
+  have hP : P := by -- let's first prove P
     sorry -- proof of P
-  sorry -- proof of Q, using P
+  have hR : R := by -- let's next prove R
+    sorry -- proof of R
+  sorry -- proof of Q, using P & R (or rather, hP)
 
 example : Q := by
-  suffices hP : P by
-    sorry -- proof of Q, using P
+  suffices hP : P by -- it suffices to show P
+    sorry -- here is why (proof of Q, using P)
   sorry -- proof of P
 
 /-
@@ -149,8 +151,8 @@ Whenever you have multiple goals, each should be indented two spaces with `·`.
 
 example (hP : P) (hQ : Q) : P ∧ Q := by
   constructor
-  · exact hP
-  · exact hQ
+  ·    exact hP
+  · exact    hQ
 
 /-
 When a hypothesis is of the form `hPQ : P ∨ Q`, the tactic
@@ -224,6 +226,7 @@ hypothesis `hP : P` and another where you have the hypothesis `hP : ¬ P`.
 -/
 
 example : P ∨ ¬ P := by
+  -- classical
   by_cases hP : P
   · left
     exact hP
@@ -241,62 +244,152 @@ learned so far (`exact`, `intro`, `apply`, `specialize`, `have`, `suffices`,
 /-- If we know `P`, and we also know `P → Q`, we can deduce `Q`.
 This is called "modus ponens" by logicians. -/
 example : P → (P → Q) → Q := by
-  sorry
+  intro hP himpl
+  apply himpl
+  exact hP
 
 /-- `→` is transitive. -/
 example : (P → Q) → (Q → R) → P → R := by
-  sorry
+  intro hPQ hQR hP
+  apply hQR
+  apply hPQ
+  exact hP
+
+example : (P → Q) → (Q → R) → P → R := by
+  intro hPQ hQR hP
+  exact hQR (hPQ hP)
+
 
 /-- If `h : P → Q → R` with goal `⊢ R`, then `apply h` will give two goals! -/
 example : (P → Q → R) → (P → Q) → P → R := by
-  sorry
+  intro hPQR hPQ hP
+  have hQ : Q := by
+    apply hPQ
+    exact hP
+  apply hPQR at hP
+  apply hP
+  exact hQ
+
 
 /-- `∨` is symmetric. -/
 example : P ∨ Q → Q ∨ P := by
-  sorry
+  intro hPQ
+  rcases hPQ with hP | hQ
+  · right
+    exact hP
+  · left; exact hQ   -- we can separate commands by semicolon (;)
 
 /-- `∧` is symmetric. -/
 example : P ∧ Q → Q ∧ P := by
-  sorry
+  intro hPQ
+  rcases hPQ with ⟨hP, hQ⟩
+  constructor
+  · exact hQ
+  · exact hP
 
 /-- `∧` is transitive. -/
 example : P ∧ Q → Q ∧ R → P ∧ R := by
-  sorry
+  intro hPQ hQR
+  rcases hPQ with ⟨ hP, hQ ⟩
+  rcases hQR with ⟨ hQ, hR ⟩
+  constructor
+  · exact hP
+  · exact hR
 
 example : P ∨ Q → (P → R) → (Q → R) → R := by
-  sorry
+  intro hPQ hPR hQR
+  rcases hPQ with hP | hQ
+  · apply hPR
+    exact hP
+  · apply hQR
+    exact hQ
 
 example : (P → Q) → P ∨ R → Q ∨ R := by
-  sorry
+  intro hPQ hPR
+  rcases hPR with hP | hR
+  · left
+    apply hPQ
+    exact hP
+  · right
+    exact hR
 
 example : P → True := by
-  sorry
+  intro _   -- "anonymous variable"
+  trivial
 
 example : False → P := by
-  sorry
+  intro hF
+  by_contra hP
+  exact hF
 
 example : ¬ True → P := by
-  sorry
+  intro hF
+  have hT : True := by
+    trivial
+  apply hF at hT
+  by_contra hP
+  exact hT
 
 example : P → ¬ False := by
-  sorry
+  intro hP hF
+  exact hF
 
 example : ¬ P → P → Q := by
-  sorry
+  intro hnP hP
+  apply hnP at hP
+  by_contra hQ
+  exact hP
 
 /-- If we know `P → Q`, and we also know `¬ Q`, we can deduce `¬ P`.
 This is called "modus tollens" by logicians. -/
 example : (P → Q) → ¬ Q → ¬ P := by
-  sorry
+  intro hPQ hnQ hP
+  apply hPQ at hP
+  apply hnQ at hP
+  exact hP
 
 example : (¬ Q → ¬ P) → P → Q := by
-  sorry
+  intro hQP hP
+  by_contra hQ
+  apply hQP at hQ
+  apply hQ at hP
+  exact hP
 
 example : (P → Q) → ((P → Q) → P) → Q := by
-  sorry
+  intro hPQ hPQP
+  suffices hP : P by  -- no := here!!
+    exact hPQ hP
+  exact hPQP hPQ
 
 example : ((P → Q) → R) → ((Q → R) → P) → ((R → P) → Q) → P := by
-  sorry
+  intro hPQR hQRP hRPQ
+  by_contra hnP
+  have hPQ : P → Q := by
+    intro hP
+    by_contra hnQ
+    exact hnP hP
+  have hR : R := by
+    exact hPQR hPQ
+  have hQR : Q → R := by
+    intro _
+    exact hR
+  have hP : P := by
+    exact hQRP hQR
+  exact hnP hP
+
+example : ((P → Q) → R) → ((Q → R) → P) → ((R → P) → Q) → P := by
+  intro hPQR hQRP hRPQ
+  by_contra hnP
+  apply hnP
+  apply hQRP
+  intro hQ
+  apply hPQR
+  intro hP
+  exact hQ
 
 example : ((Q → P) → P) → (Q → R) → (R → P) → P := by
-  sorry
+  intro hQPP hQR hRP
+  apply hQPP
+  intro hQ
+  apply hRP
+  apply hQR hQ
