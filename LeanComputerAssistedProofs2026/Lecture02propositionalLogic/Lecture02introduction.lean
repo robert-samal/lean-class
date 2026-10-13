@@ -28,6 +28,7 @@ the propositions are by giving them names like `P` and `Q`.
 Here is one of the most basic theorems you can write down in Lean.
 It says that if a proposition `P` is true, then `P` is true.
 -/
+-- comment
 
 example (P : Prop) (h : P) : P := by
   sorry
@@ -80,6 +81,10 @@ wait for our discussion of type theory in lecture 5.
 
 example (P : Prop) (h : P) : P := by
   exact h
+  -- tactics mode
+
+example (P : Prop) (h : P) : P := h
+  -- direct mode
 
 /-
 Now if you put your cursor after the proof, the infoview just says "no goals",
@@ -120,7 +125,7 @@ DON'T!
 example (h : P) (h : Q) (h : R) : R := by
   exact h
 
-/-
+/- → →
 Given two propositions `P` and `Q`, the expression `P → Q` denotes the
 implication "if `P` is true, then `Q` is true". Mathematicians usually
 write the implication arrow as `P ⇒ Q`, but Lean prefers a single arrow
@@ -135,8 +140,8 @@ Here are few examples of how to use `intro` with `exact`.
 -/
 
 example : P → P := by
-  intro h
-  exact h
+  intro h  -- assume P is true and h is its proof
+  exact h  -- h is the proof of P (which is the goal)
 
 example (hQ : Q) : P → Q := by
   intro hP
