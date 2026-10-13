@@ -1,13 +1,13 @@
 /-
 Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Bhavik Mehta, Kevin Buzzard
+Authors: Bhavik Mehta, Kevin Buzzard, Robert Šámal
 -/
 import Mathlib.Tactic -- imports all the Lean tactics
 
 /-!
 
-# Logic in Lean, example sheet 2 : `True` and `False`
+# Logic in Lean
 
 -/
 
@@ -15,6 +15,7 @@ variable (P Q R S : Prop)
 
 
 /- New tactic `exfalso` -/
+
 example : False → P := by
   intro h
   exfalso -- instead of showing `P`, we will show a contradiction
@@ -132,8 +133,6 @@ We learn about how to manipulate a conjuction `P ∧ Q` in Lean.
 -/
 
 
-
-
 example : P ∧ Q ↔ Q ∧ P := by
   exact And.comm
 
@@ -166,14 +165,12 @@ example : P ↔ P ∧ True := by
     exact h.1
 
 example : False ↔ P ∧ False := by
-  constructor
-  · intro h; exfalso; exact h
-  · intro h; exact h.2
+  sorry
 
 example : (P ↔ Q) → (R ↔ S) → (P ∧ R ↔ Q ∧ S) := by
-  intro h1 h2
-  rw [h1,h2]
+  sorry
 
+/- use `by_cases`, also `contradiction` will be handy -/
 example : ¬(P ↔ ¬P) := by
   intro h
   by_cases hP : P
@@ -188,11 +185,9 @@ example : ¬(P ↔ ¬P) := by
 
 We learn about how to manipulate a disjunction `P ∨ Q` in Lean.
 
-
 * `left`, `right`
 
 -/
-
 
 
 example : P → P ∨ Q := by
@@ -204,12 +199,9 @@ example : Q → P ∨ Q := by
   sorry
 
 -- Here are a few ways to break down a disjunction
--- we saw this already:
+-- we saw `rcases ... with ...` already:
 example : P ∨ Q → (P → R) → (Q → R) → R := by
-  intro hPoQ
-  rcases hPoQ with h | h
-  · intro h1 h2; apply h1; exact h
-  · intro h1 h2; apply h2; exact h
+  sorry
 
 -- another syntax for the same
 example : P ∨ Q → (P → R) → (Q → R) → R := by
@@ -261,7 +253,22 @@ example : ¬(P ∧ Q) ↔ ¬P ∨ ¬Q := by
 /-
 # rw works up to syntactic equality!
 
+https://b-mehta.github.io/formalising-mathematics-notes/Part_1/equality.html#overview
+
 TODO: explain various equalities
+
+## Syntactic equality
+
+The most strict, "same formula"
+
+## Definitional equality
+
+We allow expanding definitions: `x+0` is defined to be `x`
+
+## Propositional equality
+
+We can prove an equality: `0+x` is not defined as `x`, but we can prove this as a theorem.
+
 -/
 
 
