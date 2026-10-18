@@ -1,4 +1,3 @@
-import Mathlib
 import Mathlib.Util.CountHeartbeats
 /-!
 # Measurement of simp vs. guided simp.

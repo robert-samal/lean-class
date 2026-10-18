@@ -24,7 +24,8 @@ example : False → P := by
 example : P ∧ Q → P := by
   intro h
   rcases h with ⟨left, right⟩
-  exact left
+  assumption
+
 /--
 The pattern `intro h` then `rcases h with ...` is so common that it has an abbreviation as
 `rintro ...`, so you could also do
@@ -45,7 +46,7 @@ example : P ∧ Q → P := by
 
 -- this will make more sense later, when we see that `And` is actually a defined concept
 
-example : P → Q → P ∧ Q := by
+example : P → (Q → P ∧ Q) := by
   intro hP hQ
   constructor
   -- After the `constructor` tactic, we have *2 goals*
@@ -84,7 +85,7 @@ and also the following two new tactics:
 
 
 example : P ↔ P := by
-  sorry
+  rfl
 
 
 example : (P ↔ Q) → (Q ↔ P) := by
@@ -96,7 +97,8 @@ example : (P ↔ Q) → (Q ↔ P) := by
 -- Note, that `rw` tries a weak version of `rfl` when it’s finished.
 -- If you insist to know what this means, see at the end of this file
 example : (P ↔ Q) → (Q ↔ P) := by
-  sorry
+  intro h
+  rw [h]
 
 
 
@@ -108,7 +110,7 @@ example : (P ↔ Q) ↔ (Q ↔ P) := by
 -- But, this is a well-known property of equivalence `↔`
 -- so, there are many ways to solve it, starting from "cheating" by automatic prover
 example : (P ↔ Q) ↔ (Q ↔ P) := by
-  tauto
+  grind
 
 -- another form of cheating, how do we know the library name?
 example : (P ↔ Q) ↔ (Q ↔ P) := by
@@ -147,7 +149,7 @@ example : P ∧ Q ↔ Q ∧ P := by
   rintro ⟨ hP, hQ ⟩
   constructor <;> assumption
 
-example : (P ∧ Q) ∧ R ↔ P ∧ Q ∧ R := by
+example : (P ∧ Q) ∧ R ↔ P ∧ (Q ∧ R) := by
   constructor
   · rintro ⟨ ⟨ hP, hQ⟩, hR ⟩
     exact ⟨ hP, ⟨ hQ, hR ⟩ ⟩
@@ -201,7 +203,14 @@ example : Q → P ∨ Q := by
 -- Here are a few ways to break down a disjunction
 -- we saw `rcases ... with ...` already:
 example : P ∨ Q → (P → R) → (Q → R) → R := by
-  sorry
+  intro h
+  rcases h with (hP | hQ)
+  · intro hPR hQR 
+    apply hPR 
+    assumption
+  · intro hPR hQR 
+    apply hQR 
+    assumption
 
 -- another syntax for the same
 example : P ∨ Q → (P → R) → (Q → R) → R := by
@@ -259,7 +268,7 @@ TODO: explain various equalities
 
 ## Syntactic equality
 
-The most strict, "same formula"
+The most strict, "same formula" `x = x`
 
 ## Definitional equality
 
@@ -270,6 +279,14 @@ We allow expanding definitions: `x+0` is defined to be `x`
 We can prove an equality: `0+x` is not defined as `x`, but we can prove this as a theorem.
 
 -/
+example (x : Nat) : x = x := by
+  rfl
+
+example (x : Nat) : x+0 = x := by
+  rfl
+
+example (x : Nat) : 0+x = x := by
+  sorry
 
 
 /-
