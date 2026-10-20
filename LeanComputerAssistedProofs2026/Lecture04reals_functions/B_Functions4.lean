@@ -3,9 +3,10 @@ Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
-import Mathlib.Tactic-- imports all the Lean tactics
+import Mathlib.Tactic
+/-! imports all the Lean tactics -/
 
-namespace Section3sheet1
+namespace Functions4
 
 /-
 
@@ -75,4 +76,4 @@ theorem gf_surjective : Surjective (g ∘ f) := by
 example : ¬∀ A B C : Type, ∀ (φ : A → B) (ψ : B → C), Surjective (ψ ∘ φ) → Surjective φ := by
   sorry
 
-end Section3sheet1
+end Functions4

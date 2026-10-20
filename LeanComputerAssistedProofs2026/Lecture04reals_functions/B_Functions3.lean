@@ -3,9 +3,10 @@ Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
-import Mathlib.Tactic -- imports all the Lean tactics
+import Mathlib.Tactic
+/-! imports all the Lean tactics -/
 
-namespace Section3sheet2
+namespace Functions3
 
 /-!
 
@@ -99,4 +100,4 @@ example : Function.Injective f := by
   -- 6 goals left
   all_goals cases h -- no cases :-)
 
-end Section3sheet2
+end Functions3

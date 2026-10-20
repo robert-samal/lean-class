@@ -4,12 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- imports all the Lean tactics
-import FormalisingMathematics2026.Solutions.Section02reals.Sheet5
+import LeanComputerAssistedProofs2026.Lecture04reals_functions.A_Reals3
 -- import a bunch of previous stuff
 
-namespace Section2sheet6
+namespace Reals6
 
-open Section2sheet3solutions Section2sheet5solutions
 
 /-
 
@@ -88,4 +87,4 @@ sorry
 theorem tendsTo_unique (a : ℕ → ℝ) (s t : ℝ) (hs : TendsTo a s) (ht : TendsTo a t) : s = t := by
   sorry
 
-end Section2sheet6
+end Reals6

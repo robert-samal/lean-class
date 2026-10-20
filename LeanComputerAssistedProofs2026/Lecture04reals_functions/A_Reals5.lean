@@ -4,26 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic
+import LeanComputerAssistedProofs2026.Lecture04reals_functions.A_Reals3
+/-!
 -- imports all the Lean tactics
-import FormalisingMathematics2026.Solutions.Section02reals.Sheet3
 -- import the definition of `TendsTo` from a previous sheet
+-/
 
-namespace Section2sheet5
+namespace Reals5
 
-open Section2sheet3solutions
+-- for now we have to refer to the definition from other namespace using its full name:
+#print Reals3.TendsTo
+-- #print TendsTo
+-- so we open the namespace:
+open Reals3
+#print TendsTo
 
 -- you can maybe do this one now
 theorem tendsTo_neg {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fun n ↦ -a n) (-t) := by
-  rw [tendsTo_def] at ha ⊢
-  intro ε hε
-  specialize ha ε hε
-  rcases ha with ⟨B, hB⟩
-  use B
-  intro n hn
-  rw [← abs_neg]
-  ring_nf
-  specialize hB n hn
-  exact hB
+-- use `rcases` to deconstruct ∃ statement
+-- `abs_neg` will be helpful, as well as `ring_nf`
+  sorry
 
 /-
 `tendsTo_add` is the next challenge. In a few weeks' time I'll
@@ -44,7 +44,7 @@ theorem tendsTo_add {a b : ℕ → ℝ} {t u : ℝ} (ha : TendsTo a t) (hb : Ten
   intro ε hε
   --  There's a bound X such that if n≥X then a(n) is within ε/2 of t
   specialize ha (ε / 2) (by linarith)
-  cases' ha with X hX
+  rcases ha with ⟨X, hX⟩
   --  There's a bound Y such that if n≥Y then b(n) is within ε/2 of u
   obtain ⟨Y, hY⟩ := hb (ε / 2) (by linarith)
   --  use max(X,Y),
@@ -66,4 +66,4 @@ theorem tendsTo_sub {a b : ℕ → ℝ} {t u : ℝ} (ha : TendsTo a t) (hb : Ten
   -- this one follows without too much trouble from earlier results.
   sorry
 
-end Section2sheet5
+end Reals5

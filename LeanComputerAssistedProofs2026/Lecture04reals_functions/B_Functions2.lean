@@ -3,9 +3,10 @@ Copyright (c) 2025 Bhavik Mehta. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bhavik Mehta, Kevin Buzzard
 -/
-import Mathlib.Tactic -- imports all the Lean tactics
+import Mathlib.Tactic
+/-! imports all the Lean tactics -/
 
-namespace Section3sheet1
+namespace Functions2
 
 /-!
 
@@ -133,4 +134,4 @@ example (f : X → Y) (g : Y → Z) : Injective (g ∘ f) → Injective f := by
 example (f : X → Y) (g : Y → Z) : Surjective (g ∘ f) → Surjective g := by
   sorry
 
-end Section3sheet1
+end Functions2

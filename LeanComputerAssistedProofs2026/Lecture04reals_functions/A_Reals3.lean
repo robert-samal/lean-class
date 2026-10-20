@@ -5,7 +5,7 @@ Authors: Bhavik Mehta, Kevin Buzzard
 -/
 import Mathlib.Tactic -- import all the tactics
 
-namespace Reals
+namespace Reals3
 
 /-
 
@@ -111,8 +111,7 @@ theorem tendsTo_thirtyseven' : TendsTo (fun _ ↦ 37) 37 := by
 theorem tendsTo_add_const {a : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo a t) :
     TendsTo (fun n => a n + c) (t + c) := by
   -- hints: make sure you know the maths proof!
-  -- use `cases` to deconstruct an `exists`
-  -- hypothesis, and `specialize` to specialize
+  -- use `specialize` to specialize
   -- a `forall` hypothesis to specific values.
   -- Look up the explanations of these tactics in Part 2
   -- of the course notes.  rw [tendsTo_def] at h ⊢
@@ -125,17 +124,7 @@ theorem tendsTo_add_const {a : ℕ → ℝ} {t : ℝ} (c : ℝ) (h : TendsTo a t
 -- you're not quite ready for this one yet though.
 /-- If `a(n)` tends to `t` then `-a(n)` tends to `-t`. -/
 example {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fun n => -a n) (-t) := by
-  sorry?
-  intro ε hε
-  rw [TendsTo] at ha
-  specialize ha ε hε
-  simp only [sub_neg_eq_add]
-  obtain ⟨ B, hB ⟩ := ha
-  use B
-  intro n hBn
-  specialize hB n hBn
-  rw [abs_sub_comm (a n) t] at hB
-  norm_num
+  sorry
 
 
 
@@ -146,4 +135,4 @@ example {a : ℕ → ℝ} {t : ℝ} (ha : TendsTo a t) : TendsTo (fun n => -a n)
 -- Leave this for now and try sheet 4, where you'll learn how to discover these things.
 -- We'll come back to this example on sheet 5.
 
-end Reals
+end Reals3
